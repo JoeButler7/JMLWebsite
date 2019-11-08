@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <head>
-  <title>Register</title>
+  <title>Login</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='update.css') }}">
 </head>
 <body>
-  <h1 id="header">Register</h1>
+  <h1 id="header">Login</h1>
   <div class="most">
     <form action="" method="post">
       {{form.hidden_tag()}}
@@ -15,6 +15,7 @@
       <br>
       {{form.password.label}}{{form.password}} <br>
       <br>
+      {{form.rememberme.label}}{{form.rememberme}}<br>
       <input type="submit" value="Login">
     </form>
   </div>
