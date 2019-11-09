@@ -7,7 +7,7 @@
 
     <title>Home</title>
 
-	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="{{url_for('static',filename='css/bootstrap.css')}}" rel="stylesheet">
 
     <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
@@ -27,13 +27,13 @@
 			  <span class="icon-bar"></span>
 			  <span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="app_home.html">overRated</a>
+			<a class="navbar-brand" href="home">overRated</a>
 		  </div>
 		  <div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-                <li><a href="login.html">Login</a></li>
-                <li><a href="create_account.html">Sign Up</a></li>
-			  
+                <li><a href="login">Login</a></li>
+                <li><a href="register">Sign Up</a></li>
+
 			</ul>
 		  </div>
 		</div>
@@ -41,35 +41,22 @@
 
     <body class="text-center">
         <div class = "container">
-            <form class="form-signin">
+          <div class = "page-header">
+              <h1> Create An Account </h1>
+          </div>
+        <form class="form-signin" action="" method="post">
+            {{form.hidden_tag()}}
+          <div class = "jumbotron">
+				<label for="lname" class="sr-only">Username</label>
+					  {{ form.username(placeholder='Username', class='form-control') }}
+        <label for="inputEmail" class="sr-only">Email address</label>
+          {{ form.email(placeholder='Email', class='form-control') }}
+        <label for="inputPassword" class="sr-only">Password</label>
+              {{ form.password(placeholder='Password', class='form-control') }}
+        <label for="inputPassword" class="sr-only">Password</label>
+              {{ form.confirm_password(placeholder='Confirm Password', class='form-control') }}
 
-                <div class = "page-header">
-                    <h1> Create An Account </h1>
-                </div> 
-
-                <div class = "jumbotron">  
-					
-				<label for="fname" class="sr-only">First Name</label>
-					<input type="text" id="fname" class="form-control" placeholder="First Name" required autofocus>
-					
-				<label for="lname" class="sr-only">Last Name</label>
-					<input type="text" id="fname" class="form-control" placeholder="Last Name" required autofocus>
-                
-				<input type="date" id="dob" class="form-control" placeholder="Date of Birth" required autofocus>
-					
-
-                <label for="inputEmail" class="sr-only">Email address</label>
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-              
-                <label for="inputPassword" class="sr-only">Password</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-              
-                <div class="checkbox mb-3">
-                    <label><input type="checkbox" value="remember-me"> Remember me </label>
-                </div>
-              
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Create Account</button>
-            
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Create Account">
             </form>
             </div>
 
@@ -78,11 +65,11 @@
               </footer>
 
             </div>
-        
+
 
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </body>
 
 </html>
