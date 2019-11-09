@@ -13,7 +13,7 @@ from Site.models import User, Post
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    return render_template('app_home.html')
 
 @app.route('/register', methods=['GET','POST'])
 def register():
@@ -27,7 +27,7 @@ def register():
         db.session.commit()
         flash('Account successfully created')
         return redirect(url_for('login'))
-    return render_template('register.html', form=form)
+    return render_template('create_account.html', form=form)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -59,11 +59,12 @@ def account():
     profile_pic=url_for('static', filename='profilepics/'+current_user.profile_pic)
     return render_template('myaccount.html',profile_pic=profile_pic)
 
+
 @app.route('/updateaccount', methods=['GET', 'POST'])
 @login_required
-def account():
+def updateaccount():
     form=UpdateProfileForm()
-    if form=validate_on_submit():
+    if form.validate_on_submit():
         current_user.username=form.username.data
         current_user.email=form.email.data
         db.session.commit
