@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request,flash, request
 from flask_login import login_user, current_user, logout_user, login_required
 from passlib.hash import argon2
 from Site import app, db
-from Site.Forms import RegFrom, LoginForm
+from Site.Forms import RegFrom, LoginForm, UpdateProfileForm
 from Site.models import User, Post
 
 
@@ -56,4 +56,18 @@ def logout():
 @app.route('/myaccount')
 @login_required
 def account():
-    return render_template('myaccount.html')
+    profile_pic=url_for('static', filename='profilepics/'+current_user.profile_pic)
+    return render_template('myaccount.html',profile_pic=profile_pic)
+
+@app.route('/updateaccount', methods=['GET', 'POST'])
+@login_required
+def account():
+    form=UpdateProfileForm()
+    if form=validate_on_submit():
+        current_user.username=form.username.data
+        current_user.email=form.email.data
+        db.session.commit
+        flash('Account successfully updated')
+        return redirect(url_for('account'))
+    profile_pic=url_for('static', filename='profilepics/'+current_user.profile_pic)
+    return render_template('update.html',profile_pic=profile_pic,form=form)
