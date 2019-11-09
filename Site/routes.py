@@ -2,8 +2,9 @@ from flask import render_template, redirect, url_for, request,flash, request
 from flask_login import login_user, current_user, logout_user, login_required
 from passlib.hash import argon2
 from Site import app, db
-from Site.Forms import RegFrom, LoginForm, UpdateProfileForm
+from Site.Forms import RegFrom, LoginForm, UpdateProfileForm, NewPostForm
 from Site.models import User, Post
+import secrets, os
 
 
 
@@ -46,7 +47,7 @@ def login():
         else:
             flash('Invalid Email or Password')
         return render_template('login.html', form=form)
-    return render_template('login.html', form=form)
+    return render_template('login.html',title='Login',form=form)
 
 @app.route('/logout')
 def logout():
@@ -57,7 +58,17 @@ def logout():
 @login_required
 def account():
     profile_pic=url_for('static', filename='profilepics/'+current_user.profile_pic)
-    return render_template('myaccount.html',profile_pic=profile_pic)
+    return render_template('myaccount.html', title='Account', profile_pic=profile_pic)
+
+
+
+def saveimg(img):
+    newname=secrets.token_hex(5)
+    _, ext=os.path.splitext(img.filename)
+    fn=newname+ext
+    img_path=os.path.join(app.root_path,'static/profile_pics', fn)
+    img.save(img_path)
+    return fn
 
 
 @app.route('/updateaccount', methods=['GET', 'POST'])
@@ -65,10 +76,28 @@ def account():
 def updateaccount():
     form=UpdateProfileForm()
     if form.validate_on_submit():
+        if form.picture.data:
+            profile_pic=saveimg(form.picture.data)
+            current_user.profile_pic=profile_pic
         current_user.username=form.username.data
         current_user.email=form.email.data
         db.session.commit
         flash('Account successfully updated')
         return redirect(url_for('account'))
     profile_pic=url_for('static', filename='profilepics/'+current_user.profile_pic)
-    return render_template('update.html',profile_pic=profile_pic,form=form)
+    return render_template('update.html',title='Update Profile',profile_pic=profile_pic,form=form)
+
+
+
+
+@app.route('/newpost', methods=['POST','GET'])
+@login_required
+def newpost():
+    form=NewPostForm()
+    if form.validate_on_submit:
+        newpost=Post(Title=form.title.data,Category=form.type.data, content=form.contend.data, author_id=current_user)
+        db.session.add(newpost)
+        db.session.commit
+        flash("Successfully Posted")
+        return redirect(url_for('home'))
+    return render_template('newpost.html', title='New Post', form=form)

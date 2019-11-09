@@ -20,9 +20,10 @@ class User(db.Model, UserMixin):
 
 class Post(db.Model):
     id=db.Column(db.Integer, primary_key=True)
-    Topic=db.Column(db.String(100),nullable=False)
+    Title=db.Column(db.String(50), nullable=False)
+    Category=db.Column(db.String(15),nullable=False)
     date_posted=db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content=db.Column(db.Text, nullable=False)
+    content=db.Column(db.Text)
     author_id=db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
 
 
