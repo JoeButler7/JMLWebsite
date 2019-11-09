@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Home</title>
+    <title>Sign Up</title>
 
 	<link href="{{url_for('static',filename='css/bootstrap.css')}}" rel="stylesheet">
 
@@ -30,11 +30,17 @@
 			<a class="navbar-brand" href="home">overRated</a>
 		  </div>
 		  <div id="navbar" class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-                <li><a href="login">Login</a></li>
-                <li><a href="register">Sign Up</a></li>
+        {%if current_user.is_authenticated%}
+        <ul class="nav navbar-nav">
+          <li><a href="logout">Logout</a></li>
+        </ul>
+        {%else%}
+  			<ul class="nav navbar-nav">
+                  <li><a href="login">Login</a></li>
+                  <li><a href="register">Sign Up</a></li>
 
-			</ul>
+  			</ul>
+        {%endif%}
 		  </div>
 		</div>
 	  </nav>

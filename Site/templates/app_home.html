@@ -31,11 +31,17 @@
 			<a class="navbar-brand" href="home">overRated</a>
 		  </div>
 		  <div id="navbar" class="navbar-collapse collapse">
+      {%if current_user.is_authenticated%}
+      <ul class="nav navbar-nav">
+        <li><a href="logout">Logout</a></li>
+      </ul>
+      {%else%}
 			<ul class="nav navbar-nav">
                 <li><a href="login">Login</a></li>
                 <li><a href="register">Sign Up</a></li>
 
 			</ul>
+      {%endif%}
 		  </div><!--/.nav-collapse -->
 		</div>
 	  </nav>
