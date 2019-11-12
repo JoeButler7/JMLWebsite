@@ -1,9 +1,29 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 100px;
-  padding-bottom: 20px;
+ padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .navbar-static-top {
-  margin-bottom: 25px;
+  margin-bottom: 0px;
+}
+.navbar>.container, .navbar>.container-fluid {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: nowrap;
+    -ms-flex-align: center;
+    /* align-items: center; */
+    -ms-flex-pack: justify;
+    /* justify-content: space-between; */
+}
+
+.navbar-nav {
+    flex-direction: row;
+}
+
+footer p {
+    margin: 0 auto;
+    width: 1170px;
+    padding: 0 0 1px 30px;
 }
