@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row centered-form">
+  <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Phone Verification</h3>
+      </div>
+      <div class="panel-body">
+        <form role="form" method="POST">
+          {{ form.csrf_token }}
+
+          {% if form.errors %}
+          <ul>
+            {% for error in form.errors.values() %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+
+          <div class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3">
+              <div class="form-group">
+                <input type="text" name="country_code" required="" id="id_country_code"
+                  class="form-control input-sm" placeholder="Country Code">
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6">
+              <div class="form-group">
+                <input type="text" name="phone_number" required="" id="id_phone_number"
+                  class="form-control input-sm" placeholder="Phone Number">
+              </div>
+            </div>
+            
+            <div class="col-xs-3 col-sm-3 col-md-3">
+              <div class="form-group">
+                <select class="form-control input-sm" name="via" id="id_via">
+                  {% for key, value, checked in form.via.iter_choices() %}
+                    <option value="{{ key }}" checked="{{ checked }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <input type="submit" value="Request Verification" class="btn btn-info btn-block">
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

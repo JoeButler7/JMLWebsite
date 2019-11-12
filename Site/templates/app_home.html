@@ -1,52 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Home</title>
-
-	<link href="{{ url_for('static', filename= 'css/bootstrap.css')}}" rel="stylesheet">
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
-    <script src="js/ie-emulation-modes-warning.js"></script>
-
-  </head>
-
-  <body>
-
-    <!-- Static navbar -->
-    <nav class="navbar navbar-inverse navbar-static-top">
-		<div class="container">
-		  <div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-			  <span class="sr-only"></span>
-			  <span class="icon-bar"></span>
-			  <span class="icon-bar"></span>
-			  <span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="home">overRated</a>
-		  </div>
-		  <div id="navbar" class="navbar-collapse collapse">
-      {%if current_user.is_authenticated%}
-      <ul class="nav navbar-nav">
-        <li><a href="logout">Logout</a></li>
-      </ul>
-      {%else%}
-			<ul class="nav navbar-nav">
-                <li><a href="login">Login</a></li>
-                <li><a href="register">Sign Up</a></li>
-
-			</ul>
-      {%endif%}
-		  </div><!--/.nav-collapse -->
-		</div>
-	  </nav>
-
-
+{% extends "layout.html" %}
+{% block content %}
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
@@ -94,17 +47,6 @@
 		</div>
 
 		<hr class="featurette-divider">
+    </div>
+{% endblock content %}
 
-      <footer>
-        <p>JML Project, 2019 </p>
-      </footer>
-	</div>
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>

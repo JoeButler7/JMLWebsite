@@ -1,12 +1,24 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_dotenv import DotEnv
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
+from flask_scss import Scss
+
+from .config import Config
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'j43780upoy28ewrhjkeru0904780werf'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-db = SQLAlchemy(app)
-login_manager=LoginManager(app)
-login_manager.login_view='login'
+Scss(app)
+app.config.from_object(Config)
+env = DotEnv(app)
 
-from Site import routes
+csrf = CSRFProtect(app)
+
+from .db import init_db  # noqa: F401, E402
+from .models import User  # noqa: E402
+
+login_manager = LoginManager()
+login_manager.user_loader(User.load_user)
+login_manager.init_app(app)
+
+from . import routes
