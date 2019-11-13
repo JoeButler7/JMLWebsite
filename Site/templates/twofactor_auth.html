@@ -10,7 +10,7 @@
       </div>
       
       <div class="panel-body">
-        <form action="/2fa" method="POST" role="form">
+        <form action="/auth" method="POST" role="form">
           {{ form.csrf_token }}
 
           {% if form.errors %}
