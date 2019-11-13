@@ -47,6 +47,16 @@ class RegForm(FlaskForm):
         if User.query.get(field.data):
             raise ValidationError('Username already taken')
 
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('An account with that email already exists')
+
+    def validate_phone_number(self,phone_number):
+        user = User.query.filter_by(phone_number=phone_number.data).first()
+        if user:
+            raise ValidationError('An account with that phone number already exists')
+
     def validate_country_code(self, field):
         if not field.data.startswith('+'):
             field.data = '+' + field.data
