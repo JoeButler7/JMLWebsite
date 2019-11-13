@@ -1,6 +1,7 @@
 from flask_sqlalchemy import Model
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship, backref
+from passlib.hash import argon2
 
 from .db import Base
 from datetime import datetime
@@ -18,7 +19,7 @@ class User(Base):
     email = Column(String(100), unique=True, nullable=False)
     profile_pic = Column(String(20), nullable=False, default='default.jpg')
     authy_id = Column(String(12))
-    pw_hash = Column(String(50))
+    pw_hash = Column(String(200))
     is_authenticated = Column(Boolean(), default=False)
 
     # !posts = relationship('Post', backref=backref('books', lazy='dynamic'))
@@ -35,10 +36,10 @@ class User(Base):
         return f"User('{self.username}', '{self.email}','{self.profile_pic}')"
 
     def set_password(self, password):
-        self.pw_hash = generate_password_hash(password)
+        self.pw_hash = argon2.hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.pw_hash, password)
+        return argon2.verify(password,self.pw_hash )
 
     def is_active(self):
         return True

@@ -5,7 +5,7 @@ import flask
 from authy.api import AuthyApiClient
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, logout_user, login_required, login_manager
-from passlib.hash import argon2
+
 
 from Site import app, db
 from Site.forms import RegForm, LoginForm, UpdateProfileForm, NewPostForm, TokenVerificationForm, PhoneVerificationForm, \
