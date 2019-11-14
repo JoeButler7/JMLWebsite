@@ -7,7 +7,6 @@ from authy.api import AuthyApiClient
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, logout_user, login_required, login_manager
 
-
 from Site import app, db
 from Site.forms import RegForm, LoginForm, UpdateProfileForm, NewPostForm, TokenVerificationForm, PhoneVerificationForm, \
     TokenPhoneValidationForm
@@ -43,7 +42,7 @@ def register():
                 form.email.data,
                 form.password.data,
                 authy_user.id,
-                form.country_code.data+form.phone_number.data,
+                form.country_code.data + form.phone_number.data,
                 is_authenticated=True
             )
             user.authy_id = authy_user.id
@@ -69,7 +68,6 @@ def auth():
         flask.session['authy'] = True
         return flask.redirect('/myaccount')
     return flask.render_template('twofactor_auth.html', form=form)
-
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -101,9 +99,9 @@ def logout():
 
 
 @app.route('/myaccount')
-@login_required
-@auth_required
 def account():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
     profile_pic = url_for('static', filename='profilepics/' + current_user.profile_pic)
     return render_template('myaccount.html', title='Account', profile_pic=profile_pic, user=current_user)
 

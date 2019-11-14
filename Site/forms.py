@@ -17,7 +17,6 @@ from Site.models import User
 authy_api = AuthyApiClient(app.config.get('ACCOUNT_SECURITY_API_KEY'))
 
 
-
 class RegForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     email = EmailField('email', validators=[DataRequired()])
@@ -36,7 +35,7 @@ class RegForm(FlaskForm):
         if user:
             raise ValidationError('An account with that email already exists')
 
-    def validate_phone_number(self,phone_number):
+    def validate_phone_number(self, phone_number):
         user = User.query.filter_by(phone_number=phone_number.data).first()
         if user:
             raise ValidationError('An account with that phone number already exists')
@@ -81,8 +80,6 @@ class UpdateProfileForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('An account with that email already exists')
-
-
 
 
 class LoginForm(FlaskForm):
