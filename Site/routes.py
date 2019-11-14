@@ -25,22 +25,6 @@ def home():
     return render_template('app_home.html')
 
 
-'''
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    form = RegForm()
-    if form.validate_on_submit():
-        hashed_password = argon2.hash(form.password.data)
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        flash('Account successfully created')
-        return redirect(url_for('login'))
-    return flask.render_template('create_account.html', form=form)
-    '''
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
