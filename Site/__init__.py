@@ -15,6 +15,7 @@ env = DotEnv(app)
 csrf = CSRFProtect(app)
 
 from .db import init_db  # noqa: F401, E402
+from .models import Post  # noqa: E402
 from .models import User  # noqa: E402
 
 login_manager = LoginManager()

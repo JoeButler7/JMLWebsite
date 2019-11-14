@@ -1,26 +1,26 @@
+from datetime import datetime
+
+from flask_login import UserMixin
 from flask_sqlalchemy import Model
+from passlib.hash import argon2
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship, backref
-from passlib.hash import argon2
 
 from .db import Base
-from datetime import datetime
-from flask_login import UserMixin
-
-from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(Base):
     __tablename__ = 'users'
 
-    # !id = Column(Integer, unique=True, primary_key=True)
-    # ! username = Column(String(20), unique=True)
-    username = Column(String(50), unique=True, primary_key=True)
+    id = Column(Integer, unique=True, primary_key=True)
+    username = Column(String(20), unique=True)
+    # !username = Column(String(50), unique=True, primary_key=True)
     email = Column(String(100), unique=True, nullable=False)
     profile_pic = Column(String(20), nullable=False, default='default.jpg')
     authy_id = Column(String(12))
     pw_hash = Column(String(200))
     is_authenticated = Column(Boolean(), default=False)
+    #!posts = relationship('Post', backref=backref('books', lazy='dynamic'))
 
     # !posts = relationship('Post', backref=backref('books', lazy='dynamic'))
 
@@ -39,28 +39,34 @@ class User(Base):
         self.pw_hash = argon2.hash(password)
 
     def check_password(self, password):
-        return argon2.verify(password,self.pw_hash )
+        return argon2.verify(password, self.pw_hash)
 
     def is_active(self):
         return True
 
     def get_id(self):
-        return self.username
+        return self.id
 
     def is_anonymous(self):
         return False
 
     @classmethod
-    def load_user(cls, user_id):
-        return cls.query.get(user_id)
+    def load_user(cls, id):
+        return cls.query.get(id)
 
 
-'''
 class Post(Model, UserMixin):
+    __tablename__ = 'post'
+
     id = Column(Integer, primary_key=True)
     Title = Column(String(50), nullable=False)
     Category = Column(String(15), nullable=False)
-    date_posted = Column(DateTime, nullable=False, default=datetime.utcnow)
+    date_posted = Column(DateTime, index=True, default=datetime.utcnow)
     content = Column(Text)
-    author_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    '''
+    author_id = Column(Integer, ForeignKey('User.id'), nullable=False)
+
+    @classmethod
+    def load_post(cls, post_id):
+        return cls.query.get(post_id)
+
+
