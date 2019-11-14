@@ -15,13 +15,13 @@ from flask_login import UserMixin
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, unique=True, primary_key=True)
-    username = Column(String(20), unique=True)
-    # !username = Column(String(50), unique=True, primary_key=True)
+    # ! id = Column(Integer, unique=True, primary_key=True)
+    #! username = Column(String(20), unique=True)
+    username = Column(String(50), unique=True, primary_key=True)
     email = Column(String(100), unique=True, nullable=False)
     profile_pic = Column(String(20), nullable=False, default='default.jpg')
     authy_id = Column(String(12))
-    pw_hash = Column(String(100))
+    pw_hash = Column(String(200))
     phone_number = Column(String(15))
     date_created = Column(DateTime, default=datetime.utcnow)
     is_authenticated = Column(Boolean(), default=False)
@@ -52,14 +52,14 @@ class User(Base):
         return True
 
     def get_id(self):
-        return self.id
+        return self.username
 
     def is_anonymous(self):
         return False
 
     @classmethod
-    def load_user(cls, id):
-        return cls.query.get(id)
+    def load_user(cls, user_id):
+        return cls.query.get(user_id)
 
 
 class Post(Model, UserMixin):
