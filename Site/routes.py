@@ -115,9 +115,9 @@ def logout():
 
 
 @app.route('/myaccount')
-@login_required
-@auth_required
 def account():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
     profile_pic = url_for('static', filename='profilepics/' + current_user.profile_pic)
     return render_template('myaccount.html', title='Account', profile_pic=profile_pic, user=current_user)
 
