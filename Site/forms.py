@@ -16,23 +16,6 @@ from Site.models import User
 
 authy_api = AuthyApiClient(app.config.get('ACCOUNT_SECURITY_API_KEY'))
 
-'''class RegFrom(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Submit')
-
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user:
-            raise ValidationError('Username already in use')
-
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user:
-            raise ValidationError('An account with that email already exists')'''
-
 
 class RegForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
@@ -46,6 +29,16 @@ class RegForm(FlaskForm):
     def validate_username(self, field):
         if User.query.get(field.data):
             raise ValidationError('Username already taken')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('An account with that email already exists')
+
+    def validate_phone_number(self, phone_number):
+        user = User.query.filter_by(phone_number=phone_number.data).first()
+        if user:
+            raise ValidationError('An account with that phone number already exists')
 
     def validate_country_code(self, field):
         if not field.data.startswith('+'):
@@ -87,15 +80,6 @@ class UpdateProfileForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('An account with that email already exists')
-
-
-'''
-class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    rememberme = BooleanField('Remember Me')
-    submit = SubmitField('Login')
-'''
 
 
 class LoginForm(FlaskForm):

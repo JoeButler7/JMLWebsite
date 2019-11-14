@@ -8,6 +8,9 @@ from sqlalchemy.orm import relationship, backref
 
 from .db import Base
 
+from datetime import datetime
+from flask_login import UserMixin
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -18,17 +21,21 @@ class User(Base):
     email = Column(String(100), unique=True, nullable=False)
     profile_pic = Column(String(20), nullable=False, default='default.jpg')
     authy_id = Column(String(12))
-    pw_hash = Column(String(200))
+    pw_hash = Column(String(100))
+    phone_number = Column(String(15))
+    date_created = Column(DateTime, default=datetime.utcnow)
     is_authenticated = Column(Boolean(), default=False)
-    #!posts = relationship('Post', backref=backref('books', lazy='dynamic'))
+
+    # !posts = relationship('Post', backref=backref('books', lazy='dynamic'))
 
     # !posts = relationship('Post', backref=backref('books', lazy='dynamic'))
 
     def __init__(self, username=None, email=None, password=None,
-                 authy_id=None, is_authenticated=False):
+                 authy_id=None, phone_number=None, is_authenticated=False):
         self.username = username
         self.email = email
         self.authy_id = authy_id
+        self.phone_number = phone_number
         self.is_authenticated = is_authenticated
         self.set_password(password)
 
@@ -68,5 +75,3 @@ class Post(Model, UserMixin):
     @classmethod
     def load_post(cls, post_id):
         return cls.query.get(post_id)
-
-

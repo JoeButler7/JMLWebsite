@@ -1,5 +1,6 @@
 import os
 import secrets
+import datetime
 
 import flask
 from authy.api import AuthyApiClient
@@ -47,7 +48,6 @@ def register():
         return redirect(url_for('home'))
     form = RegForm()
     if form.validate_on_submit():
-        #!hashed_password = argon2.hash(form.password.data)
         authy_user = authy_api.users.create(
             form.email.data,
             form.phone_number.data,
@@ -57,16 +57,16 @@ def register():
             user = User(
                 form.username.data,
                 form.email.data,
-               #! hashed_password,
                 form.password.data,
                 authy_user.id,
+                form.country_code.data+form.phone_number.data,
                 is_authenticated=True
             )
             user.authy_id = authy_user.id
             db_session.add(user)
             db_session.commit()
             login_user(user, remember=True)
-            return flask.redirect('/myaccount')
+            return flask.redirect('/auth')
         else:
             form.errors['non_field'] = []
             for key, value in authy_user.errors():
@@ -86,27 +86,6 @@ def auth():
         return flask.redirect('/myaccount')
     return flask.render_template('twofactor_auth.html', form=form)
 
-
-'''
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user and argon2.verify(form.password.data, user.password):
-            login_user(user, remember=form.rememberme.data)
-            back_page = request.args.get('next')
-            if back_page:
-                return redirect(back_page)
-            else:
-                return redirect(url_for('home'))
-        else:
-            flash('Invalid Email or Password')
-        return render_template('login.html', form=form)
-    return render_template('login.html', title='Login', form=form)
-'''
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -142,7 +121,7 @@ def logout():
 @auth_required
 def account():
     profile_pic = url_for('static', filename='profilepics/' + current_user.profile_pic)
-    return render_template('myaccount.html', title='Account', profile_pic=profile_pic)
+    return render_template('myaccount.html', title='Account', profile_pic=profile_pic, user=current_user)
 
 
 def saveimg(img):

@@ -1,33 +1,105 @@
 {% extends "layout.html" %}
 {% block content %}
 
+
+
 <div class="row centered-form">
-  <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Profile Page</h3>
-      </div>
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12">
-            <p>
-              Congrats! You have successfully Registered/Logged in!
-            </p>
-
-            <ul>
-
-            </ul>
-          </div>
+    <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Profile Page</h3>
         </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12">
-            <a href="/logout" class="btn btn-info btn-block">Logout</a>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+              <p>
+                Congrats! You have successfully Registered/Logged in!
+              </p>
+
+              <ul>
+
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+              <a href="/home" class="btn btn-md btn-primary btn-block">Home Page</a>
+              <a href="/logout" class="btn btn-md btn-primary btn-block">Logout</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+
+
+
+  <div class="jumbotron">
+
+
+  <div class="container profile">
+          <form method="post">
+              <div class="row">
+                  <div class="col-md-4">
+                      <div class="profile-img">
+                          <img src="{{ profile_pic }}" alt="Profile Pic"/>
+
+
+                      </div>
+
+                  </div>
+
+                  <div class="col-md-8">
+
+                      <div class="jumbotron">
+                              <p class="posts">{{user.username}}</p>
+                              <p class="posts">{{user.email}}</p>
+                              <p class="posts">{{user.phone_number}}</p>
+                                  <p class="posts">overRated user since: <span>{{user.date_created.strftime('%Y-%m-%d')}}</span></p>
+                                  <div class="col-md-12">
+                                          <a href="/updateaccount" class="btn btn-md btn-primary btn-block">Edit Profile</a>
+                                      </div>
+                      </div>
+
+                  </div>
+                  <row></row>
+                  <div class="row">
+                  <div class="col-md-10">
+
+              </div>
+              </div>
+
+              </div>
+
+
+
+          </form>
+
+          <div class="row">
+                  <div class="col-md-6">
+                    <h2>Review your favs</h2>
+                    <p>It’s your turn — review everything from your favorite bar to your favorite campus bathroom. Write reviews to contribute to the overRated community and help your friends find all the local gems that you love. </p>
+                    <p><a class="btn btn-secondary" href="#" role="button">Write a Review &raquo;</a></p>
+                    <p><a class="btn btn-secondary" href="#" role="button">Past Reviews &raquo;</a></p>
+                    <p><a class="btn btn-secondary" href="#" role="button">Bookmarks &raquo;</a></p>
+
+                  </div>
+
+                  <div class="col-md-6">
+                    <h2>Connect with Friends</h2>
+                    <p>Did you know you can connect with friends to discover the places they love and show off your own great taste? Welcome to overRated, where you can view your friends’ profiles, read their reviews, and manage your friends list.</p>
+                    <p><a class="btn btn-secondary" href="#" role="button">Message Friends &raquo;</a></p>
+                    <p><a class="btn btn-secondary" href="#" role="button">Followers &raquo;</a></p>
+                    <p><a class="btn btn-secondary" href="#" role="button">Following &raquo;</a></p>
+                  </div>
+
+                </div>
+
+
+
+
+      </div>
+
 
 
 {% endblock content %}
