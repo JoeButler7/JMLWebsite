@@ -15,9 +15,9 @@
               <p>
                 Congrats! You have successfully Registered/Logged in!
               </p>
-  
+
               <ul>
-  
+
               </ul>
             </div>
           </div>
@@ -31,53 +31,50 @@
       </div>
     </div>
   </div>
-  
-  
+
+
 
   <div class="jumbotron">
-  
-      
+
+
   <div class="container profile">
           <form method="post">
               <div class="row">
                   <div class="col-md-4">
                       <div class="profile-img">
-                          <img src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" alt="blank"/>
-                          <div class="file btn btn-lg btn-primary">
-                              Change Photo
-                              <input type="file" name="file"/>
-                              
-                          </div>
-                          
+                          <img src="{{ profile_pic }}" alt="Profile Pic"/>
+
+
                       </div>
-                      
+
                   </div>
-                  
+
                   <div class="col-md-8">
-                      
+
                       <div class="jumbotron">
-                              <p class="posts">Firstname Lastname</p>
-                              <p class="posts"><span>Email@email.com</span></p>
-                                  <p class="posts">overRated user since: <span>date/date/date</span></p>
+                              <p class="posts">{{user.username}}</p>
+                              <p class="posts">{{user.email}}</p>
+                              <p class="posts">{{user.phone_number}}</p>
+                                  <p class="posts">overRated user since: <span>{{user.date_created.strftime('%Y-%m-%d')}}</span></p>
                                   <div class="col-md-12">
-                                          <input type="submit" class="btn btn-sm btn-primary btn-block" value="Edit Information"/>
+                                          <a href="/updateaccount" class="btn btn-md btn-primary btn-block">Edit Profile</a>
                                       </div>
                       </div>
-                   
+
                   </div>
                   <row></row>
                   <div class="row">
                   <div class="col-md-10">
-  
+
               </div>
               </div>
-              
+
               </div>
-              
-  
-  
-          </form>   
-          
+
+
+
+          </form>
+
           <div class="row">
                   <div class="col-md-6">
                     <h2>Review your favs</h2>
@@ -85,9 +82,9 @@
                     <p><a class="btn btn-secondary" href="#" role="button">Write a Review &raquo;</a></p>
                     <p><a class="btn btn-secondary" href="#" role="button">Past Reviews &raquo;</a></p>
                     <p><a class="btn btn-secondary" href="#" role="button">Bookmarks &raquo;</a></p>
-  
+
                   </div>
-  
+
                   <div class="col-md-6">
                     <h2>Connect with Friends</h2>
                     <p>Did you know you can connect with friends to discover the places they love and show off your own great taste? Welcome to overRated, where you can view your friends’ profiles, read their reviews, and manage your friends list.</p>
@@ -95,14 +92,14 @@
                     <p><a class="btn btn-secondary" href="#" role="button">Followers &raquo;</a></p>
                     <p><a class="btn btn-secondary" href="#" role="button">Following &raquo;</a></p>
                   </div>
-                  
+
                 </div>
-  
-  
-  
-  
+
+
+
+
       </div>
-  
-    
+
+
 
 {% endblock content %}

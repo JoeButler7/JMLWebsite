@@ -1,5 +1,6 @@
 import os
 import secrets
+import datetime
 
 import flask
 from authy.api import AuthyApiClient
@@ -65,7 +66,7 @@ def register():
             db_session.add(user)
             db_session.commit()
             login_user(user, remember=True)
-            return flask.redirect('/myaccount')
+            return flask.redirect('/auth')
         else:
             form.errors['non_field'] = []
             for key, value in authy_user.errors():
@@ -120,7 +121,7 @@ def logout():
 @auth_required
 def account():
     profile_pic = url_for('static', filename='profilepics/' + current_user.profile_pic)
-    return render_template('myaccount.html', title='Account', profile_pic=profile_pic)
+    return render_template('myaccount.html', title='Account', profile_pic=profile_pic, user=current_user)
 
 
 def saveimg(img):
