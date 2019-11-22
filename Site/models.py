@@ -15,8 +15,6 @@ from flask_login import UserMixin
 class User(Base):
     __tablename__ = 'users'
 
-    # ! id = Column(Integer, unique=True, primary_key=True)
-    #! username = Column(String(20), unique=True)
     username = Column(String(50), unique=True, primary_key=True)
     email = Column(String(100), unique=True, nullable=False)
     profile_pic = Column(String(20), nullable=False, default='default.jpg')
@@ -25,10 +23,6 @@ class User(Base):
     phone_number = Column(String(15))
     date_created = Column(DateTime, default=datetime.utcnow)
     is_authenticated = Column(Boolean(), default=False)
-
-    # !posts = relationship('Post', backref=backref('books', lazy='dynamic'))
-
-    # !posts = relationship('Post', backref=backref('books', lazy='dynamic'))
 
     def __init__(self, username=None, email=None, password=None,
                  authy_id=None, phone_number=None, is_authenticated=False):
@@ -62,15 +56,14 @@ class User(Base):
         return cls.query.get(user_id)
 
 
-class Post(Model, UserMixin):
-    __tablename__ = 'post'
+class Post(Base, UserMixin):
+    __tablename__ = 'Posts'
 
-    id = Column(Integer, primary_key=True)
-    Title = Column(String(50), nullable=False)
-    Category = Column(String(15), nullable=False)
+    id = Column(Integer, primary_key=True,autoincrement=True)
+    Title = Column(String(50), nullable=False )
+    Category = Column(String(15))
     date_posted = Column(DateTime, index=True, default=datetime.utcnow)
     content = Column(Text)
-    author_id = Column(Integer, ForeignKey('User.id'), nullable=False)
 
     @classmethod
     def load_post(cls, post_id):

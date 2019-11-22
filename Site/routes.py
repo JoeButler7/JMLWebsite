@@ -10,7 +10,7 @@ from flask_login import login_user, current_user, logout_user, login_required, l
 from Site import app, db
 from Site.forms import RegForm, LoginForm, UpdateProfileForm, NewPostForm, TokenVerificationForm, PhoneVerificationForm, \
     TokenPhoneValidationForm
-from Site.models import User
+from Site.models import User, Post
 
 from .db import db_session
 from .decorators import auth_required
@@ -132,19 +132,25 @@ def updateaccount():
     return render_template('update.html', title='Update Profile', profile_pic=profile_pic, form=form)
 
 
-@app.route('/newpost', methods=['POST', 'GET'])
-@login_required
+@app.route('/posts/create', methods=['GET','POST'])
 def newpost():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
     form = NewPostForm()
-    if form.validate_on_submit:
-        newpost = Post(Title=form.title.data, Category=form.type.data, content=form.contend.data,
-                       author_id=current_user)
-        db.session.add(newpost)
-        db.session.commit
+    if form.validate_on_submit():
+        post = Post(Title=form.title.data, content=form.content.data, Category=form.type.data)
+        db_session.add(post)
+        db_session.commit()
         flash("Successfully Posted")
         return redirect(url_for('home'))
+    app.logger.debug(form.errors)
     return render_template('newpost.html', title='New Post', form=form)
 
+@app.route('/posts/all')
+def allPosts():
+    posts=Posts.query.all()
+
+    return render_template("allposts.html",posts=posts)
 
 ######################
 # TOKEN VERIFICATION #
