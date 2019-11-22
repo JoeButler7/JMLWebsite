@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+{% block content %}
+    
+
+<div class="container">
+    <div class = "page-header">
+          <h1> Chat with Friends </h1>
+      </div> 
+
+      <div class="row">
+              <div class="col-sm-3  msg-page2 roundedcont hidden-sm hidden-xs jumbotron">
+                      <h4> Your Friends:</h4>   
+                  <ul class="list-group cutoff">
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                              <li class="list-group-item">FRIEND</li>
+                            </ul>
+          </div>
+
+
+<div class="col-sm-9">
+<div class="container jumbotron roundedcont">
+
+<div class="mhead">
+<div class="chatimg">
+  <img class=chatimg>
+  <img src="{{ profile_pic }}" alt="friendpic"/>
+  <!-- INSERT PROFILE PICTURE HERE-->
+</div>
+  <div class="submsg">
+      <h4> {{user.username}}</h4>
+      <h6>  overRated User since: {{user.date_created.strftime('%Y-%m-%d')} </h6> <!--INSERT DATE OF SIGNUP?? OR LAST ACTIVE-->
+  </div>
+</div>
+
+<div class="chatpg">
+  <div class="msg-mm">
+      <div class="chats">
+          <div class="msg-page">
+
+              <div class="r-chats">
+              <div class="r-msg">
+                  <div class="r-msg-mm">
+                      <p> message message message message message message message message message message message message message message message message message message message message message message message message </p>
+                  </div>
+              </div>
+              </div>
+
+              <div class="outgoing-chats">
+                      <div class="outgoing-chats-msg">
+                              <div class="sent-msg-mm">
+                                  <p>  message</p>
+                              </div>
+                      
+
+                      </div>
+                      </div>
+
+                              <div class="r-chats">
+                                      <div class="r-msg">
+                                          <div class="r-msg-mm">
+                                              <p> message message message message message message  </p>
+                                          </div>
+                                      </div>
+                                      </div>
+
+                                      <div class="outgoing-chats">
+                                              <div class="outgoing-chats-msg">
+                                                      <div class="sent-msg-mm">
+                                                          <p>  message message message message message messagemessage message message message message message message message message message message message message message message message message message  </p>
+                                                      </div>
+                                              
+                  
+                                              </div>
+                                              </div>
+          </div>                
+      </div>
+  </div>
+
+
+  <div class="msg-bottom">
+          <div class="input-group-append">
+            <span class="input-group-text">  <p><a class="btn btn-primary btn-sm"role="button"> Send</a></p></span>
+        </div>
+      <div class="input-group">
+              <input type="text" class="form-control" placeholder="Type your message here">
+      </div>
+      
+
+  </div>
+
+
+
+
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+{% endblock content %}
