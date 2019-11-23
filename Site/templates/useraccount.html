@@ -1,25 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
 
-
-
 <div class="row centered-form">
     <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-            </div>
-          </div>
           <div class="row">
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-
 
   <div class="jumbotron">
-
 
   <div class="container profile">
           <form method="post">
@@ -27,7 +16,6 @@
                   <div class="col-md-4">
                       <div class="profile-img">
                           <img src="{{ profile_pic }}" alt="Profile Pic"/>
-
 
                       </div>
 
@@ -37,8 +25,12 @@
 
                       <div class="jumbotron">
                               <p class="posts">{{user.username}}</p>
-                                  <p class="posts">overRated user since: <span>{{user.date_created.strftime('%Y-%m-%d')}}</span></p>
-                        
+                              <p class="posts">overRated user since: <span>{{user.date_created.strftime('%Y-%m-%d')}}</span></p>
+                              {% if current_user.is_following(user) %}
+                              <p><a class="btn btn-secondary" href="{{url_for('unfollow', username=user.username)}}"role="button">Unfollow</a></p>
+                              {% else %}
+                              <p><a class="btn btn-secondary" href="{{url_for('follow', username=user.username)}}"role="button">Follow</a></p>
+                              {% endif %}
                       </div>
 
                   </div>
@@ -53,24 +45,20 @@
 
 
 
+
           </form>
 
           <div class="row">
                   <div class="col-md-6">
-                    <h2>Review your favs</h2>
-                    <p>It’s your turn — review everything from your favorite bar to your favorite campus bathroom. Write reviews to contribute to the overRated community and help your friends find all the local gems that you love. </p>
-                    <p><a class="btn btn-secondary" href="#" role="button">Write a Review &raquo;</a></p>
-                    <p><a class="btn btn-secondary" href="#" role="button">Past Reviews &raquo;</a></p>
-                    <p><a class="btn btn-secondary" href="#" role="button">Bookmarks &raquo;</a></p>
+                    <p><a class="btn btn-secondary" href="#" role="button">Message</a></p>
+                    <p><a class="btn btn-secondary" href="#" role="button">Followers</a></p>
+                    <p><a class="btn btn-secondary" href="#" role="button">Following</a></p>
 
                   </div>
 
                   <div class="col-md-6">
-                    <h2>Connect with Friends</h2>
-                    <p>Did you know you can connect with friends to discover the places they love and show off your own great taste? Welcome to overRated, where you can view your friends’ profiles, read their reviews, and manage your friends list.</p>
-                    <p><a class="btn btn-secondary" href="#" role="button">Message Friends &raquo;</a></p>
-                    <p><a class="btn btn-secondary" href="#" role="button">Followers &raquo;</a></p>
-                    <p><a class="btn btn-secondary" href="#" role="button">Following &raquo;</a></p>
+                    <h2>Posts</h2>
+                    <p><a href="#" role="button">See All</a></p>
                   </div>
 
                 </div>

@@ -77,7 +77,7 @@ class User(Base, UserMixin):
             db_session.add(f)
 
     def unfollow(self, user):
-        f = self.followed.filter_by(followed_id=user.id).first()
+        f = self.followed.filter_by(followed_name=user.username).first()
         if f:
             db_session.delete(f)
 
