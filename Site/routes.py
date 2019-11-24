@@ -312,7 +312,7 @@ def verified():
 # Live Chat
 @app.route('/chat')
 def sessions():
-    return render_template('chat.html')
+    return render_template('chatt.html')
 
 
 def messageReceived(methods=['GET', 'POST']):
