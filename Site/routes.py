@@ -11,7 +11,7 @@ from flask_login import login_user, current_user, logout_user, login_required, l
 from Site import app, db
 from Site.forms import RegForm, LoginForm, UpdateProfileForm, NewPostForm, TokenVerificationForm, PhoneVerificationForm, \
     TokenPhoneValidationForm
-from Site.models import User
+from Site.models import User, Post
 
 from .db import db_session
 from .decorators import auth_required
@@ -26,22 +26,6 @@ socketio = SocketIO(app)
 def home():
     return render_template('app_home.html')
 
-
-'''
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    form = RegForm()
-    if form.validate_on_submit():
-        hashed_password = argon2.hash(form.password.data)
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        flash('Account successfully created')
-        return redirect(url_for('login'))
-    return flask.render_template('create_account.html', form=form)
-    '''
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -151,20 +135,66 @@ def updateaccount():
     profile_pic = url_for('static', filename='profilepics/' + current_user.profile_pic)
     return render_template('update.html', title='Update Profile', profile_pic=profile_pic, form=form)
 
+@app.route('/users/<username>')
+def useraccounts(username):
+    user=User.load_user(username)
+    if user is None:
+        flash('Invalid User')
+        return redirect(url_for('account'))
+    if current_user.is_authenticated:
+        if user.username==current_user.username:
+            return redirect(url_for('account'))
+    profile_pic = url_for('static', filename='profilepics/' + user.profile_pic)
+    return render_template('useraccount.html', title=username, profile_pic=profile_pic, user=user)
 
-@app.route('/newpost', methods=['POST', 'GET'])
+@app.route('/users/<username>/follow')
 @login_required
+def follow(username):
+    user=User.load_user(username)
+    if user is None:
+        flash('Invalid User')
+        return redirect(url_for('account'))
+    if current_user.is_following(user):
+        flash('You are already following %s' %username)
+        return redirect(url_for('useraccounts', username=username))
+    current_user.follow(user)
+    db_session.commit()
+    flash('You are now following %s' %username)
+    return redirect(url_for('useraccounts', username=username))
+
+@app.route('/users/<username>/unfollow')
+@login_required
+def unfollow(username):
+    user=User.load_user(username)
+    if user is None:
+        flash('Invalid User')
+        return redirect(url_for('account'))
+    if not current_user.is_following(user):
+        flash('You not following %s' %username)
+        return redirect(url_for('useraccounts', username=username))
+    current_user.unfollow(user)
+    db_session.commit()
+    return redirect(url_for('useraccounts', username=username))
+
+
+@app.route('/posts/create', methods=['GET','POST'])
 def newpost():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
     form = NewPostForm()
-    if form.validate_on_submit:
-        newpost = Post(Title=form.title.data, Category=form.type.data, content=form.contend.data,
-                       author_id=current_user)
-        db.session.add(newpost)
-        db.session.commit
+    if form.validate_on_submit():
+        post = Post(Title=form.title.data, content=form.content.data, Category=form.type.data)
+        db_session.add(post)
+        db_session.commit()
         flash("Successfully Posted")
         return redirect(url_for('home'))
+    app.logger.debug(form.errors)
     return render_template('newpost.html', title='New Post', form=form)
 
+@app.route('/posts/all')
+def allPosts():
+    posts=Post.query.all()
+    return render_template("allposts.html",posts=posts)
 
 ######################
 # TOKEN VERIFICATION #

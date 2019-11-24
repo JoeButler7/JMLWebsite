@@ -12,7 +12,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from phonenumbers.phonenumberutil import NumberParseException
 
 from . import app
-from Site.models import User
+from Site.models import User, Post
 
 authy_api = AuthyApiClient(app.config.get('ACCOUNT_SECURITY_API_KEY'))
 
@@ -32,6 +32,8 @@ class RegForm(FlaskForm):
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
+        if '.' not in email.data:
+            raise ValidationError('Invalid Email')
         if user:
             raise ValidationError('An account with that email already exists')
 
@@ -101,7 +103,7 @@ class NewPostForm(FlaskForm):
     categories = ['Study Spot', 'Professor', 'Class', 'Bar/Club']
     title = StringField('Title', validators=[DataRequired(), Length(min=2, max=50)])
     content = TextAreaField('content', validators=[DataRequired()])
-    type = SelectField('Category', choices=categories, validators=[DataRequired()])
+    type = SelectField('Category', choices=categories)
     submit = SubmitField('Post Review')
 
 
