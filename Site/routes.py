@@ -3,6 +3,7 @@ import secrets
 import datetime
 
 import flask
+from flask_socketio import SocketIO
 from authy.api import AuthyApiClient
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, logout_user, login_required, login_manager
@@ -16,6 +17,8 @@ from .db import db_session
 from .decorators import auth_required
 
 authy_api = AuthyApiClient(app.config.get('ACCOUNT_SECURITY_API_KEY'))
+
+socketio = SocketIO(app)
 
 
 @app.route('/')
@@ -115,6 +118,7 @@ def logout():
 
 
 @app.route('/myaccount')
+@auth_required
 def account():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
@@ -273,3 +277,23 @@ def verified():
     if not flask.session.get('is_verified'):
         return flask.redirect('/verification')
     return flask.render_template('authenticated_user.html')
+
+
+# Live Chat
+@app.route('/chat')
+def sessions():
+    return render_template('chat.html')
+
+
+def messageReceived(methods=['GET', 'POST']):
+    print('message was received!!!')
+
+
+@socketio.on('my event')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', json, callback=messageReceived)
+
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
