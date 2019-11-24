@@ -135,47 +135,6 @@ def updateaccount():
     profile_pic = url_for('static', filename='profilepics/' + current_user.profile_pic)
     return render_template('update.html', title='Update Profile', profile_pic=profile_pic, form=form)
 
-@app.route('/users/<username>')
-def useraccounts(username):
-    user=User.load_user(username)
-    if user is None:
-        flash('Invalid User')
-        return redirect(url_for('account'))
-    if current_user.is_authenticated:
-        if user.username==current_user.username:
-            return redirect(url_for('account'))
-    profile_pic = url_for('static', filename='profilepics/' + user.profile_pic)
-    return render_template('useraccount.html', title=username, profile_pic=profile_pic, user=user)
-
-@app.route('/users/<username>/follow')
-@login_required
-def follow(username):
-    user=User.load_user(username)
-    if user is None:
-        flash('Invalid User')
-        return redirect(url_for('account'))
-    if current_user.is_following(user):
-        flash('You are already following %s' %username)
-        return redirect(url_for('useraccounts', username=username))
-    current_user.follow(user)
-    db_session.commit()
-    flash('You are now following %s' %username)
-    return redirect(url_for('useraccounts', username=username))
-
-@app.route('/users/<username>/unfollow')
-@login_required
-def unfollow(username):
-    user=User.load_user(username)
-    if user is None:
-        flash('Invalid User')
-        return redirect(url_for('account'))
-    if not current_user.is_following(user):
-        flash('You not following %s' %username)
-        return redirect(url_for('useraccounts', username=username))
-    current_user.unfollow(user)
-    db_session.commit()
-    return redirect(url_for('useraccounts', username=username))
-
 
 @app.route('/posts/create', methods=['GET','POST'])
 def newpost():
@@ -193,7 +152,8 @@ def newpost():
 
 @app.route('/posts/all')
 def allPosts():
-    posts=Post.query.all()
+    posts=Posts.query.all()
+
     return render_template("allposts.html",posts=posts)
 
 ######################
