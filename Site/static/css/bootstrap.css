@@ -1,10 +1,179 @@
+.names{
+  padding-top: 20px !important;
+}
+
+.pics{
+  margin-left: 40px !important;
+  margin-right: 40px !important;
+  padding-top: 60px;
+  background: white;
+  border-radius: 20px;
+  padding-left: 10px;
+  padding-right: 10px !important;
+}
+
+.pass{
+  padding-top: 20px !important;
+}
+
+.msg-page2{
+  height:819px;
+}
+
+.cutoff{
+  max-height: 90%;
+  overflow-y: scroll;
+}
+
+.roundedcont{
+  border-radius: 20px !important;
+  max-width: 100% !important;
+}
+
+.chatimg{
+  max-width: 100%;
+  border-radius: 50%;
+}
+
+.mhead{
+  width: 100% !important;
+  border-bottom: none;
+  display: inline-block;
+  background-color: rgb(23, 24, 39);
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+}
+
+.chatimg{
+  border-radius: 50%;
+  width: 40px;
+  margin-left: 5%;
+  margin-top: 12px;
+  float: left;
+  margin-bottom: 12px;
+}
+
+.submsg{
+  float:left;
+  margin-top:10px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
+.submsg h4{
+  font-size:20px;
+  margin-left: 10px;
+  color: whitesmoke;
+
+}
+
+.submsg h6{
+  font-size: 10px;
+  margin-left: 10px;
+  line-height: 2px;
+  color: whitesmoke;
+}
+
+
+
+.msg-mm{
+  border: 1px solid #ccc;
+  overflow: hidden;
+  padding-bottom: 30px;
+}
+
+.chats{
+  padding: 30px 15px 0 25px;
+}
+
+.msg-page{
+  height:516px;
+  overflow-y: scroll;
+}
+
+
+.r-msg{
+  display: inline-block;
+  vertical-align: top;
+  width: 90%;
+}
+
+.r-msg-mm{
+  width: 57%;
+
+}
+
+.r-msg-mm p{
+  background: white none repeat scroll 0 0;
+  border-radius: 10px;
+  color: black;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width:100% !important;
+  font-size: medium !important;
+}
+
+.outgoing-chats{
+  float: right !important;
+  overflow:hidden !important;
+  margin: 26px 20px !important;
+  width: 50% !important;
+}
+.outgoing-chats-msg p{
+  background: white none repeat scroll 0 0 !important;
+  color: black !important;
+  border-radius: 10px !important;
+  margin: 0 !important;
+  padding: 5px 10px 5px 12px !important;
+  width: 100% !important;
+  font-size: medium !important;
+
+}
+
+.blk{
+  background-color: black;
+}
+
+.msg-bottom{
+  position: relative !important;
+  height: 10% !important;
+}
+
+.input-group{
+  float: right !important;
+  margin-top: 13px !important;
+  outline: none !important;
+  border-radius: 20px;
+  width: 70%;
+
+}
+
+.input-group-append{
+  margin-top: 13px !important;
+  margin-right: 20px !important;
+  outline: none !important;
+  border-radius: 20px;
+  float: right !important;
+  margin-left: 10px !important;
+}
+
+.form-control{
+  border:none !important;
+  border-radius: 20px !important;
+}
+
+.input-group-text{
+  background: black !important;
+  color: white !important;
+  border-radius: 20px !important;
+}
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-hhtml {
+html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
@@ -54,7 +223,6 @@ hhtml {
   font-size: 15px;
   font-weight: 600;
 }
-
 
 
 
@@ -427,7 +595,7 @@ th {
 .glyphicon-upload:before {
   content: "\e027";
 }
-.glyphicon-inbox:before {
+.glyphicon-mm:before {
   content: "\e028";
 }
 .glyphicon-play-circle:before {
@@ -5010,6 +5178,7 @@ a.badge:focus {
   margin-bottom: 30px;
   color: inherit;
   background-color: #eee;
+  border-radius: 20px;
 }
 .jumbotron h1,
 .jumbotron .h1 {
@@ -5296,24 +5465,29 @@ a.thumbnail.active {
 }
 .list-group-item {
   position: relative;
-  display: block;
   padding: 10px 15px;
   margin-bottom: -1px;
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color:rgb(77, 116, 172);
+  color: white;
+  margin-bottom: 5px !important;
+  border-radius: 5px;
+
 }
 .list-group-item:first-child {
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+  margin-bottom: 5px !important;
+  border-radius: 5px;
 }
 .list-group-item:last-child {
-  margin-bottom: 0;
+  margin-bottom: 5px !important;
+
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 a.list-group-item,
 button.list-group-item {
   color: #555;
+  margin-bottom: 5px !important;
+
 }
 a.list-group-item .list-group-item-heading,
 button.list-group-item .list-group-item-heading {
@@ -6804,3 +6978,5 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+/*# sourceMappingURL=bootstrap.css.ma
