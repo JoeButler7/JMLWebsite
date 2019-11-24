@@ -6,24 +6,13 @@ from passlib.hash import argon2
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship, backref
 
-from .db import Base, db_session
+from .db import Base
 
 from datetime import datetime
 from flask_login import UserMixin
 
 
-
-
-class Follow(Base):
-    __tablename__='Follows'
-
-    follower_name=Column(String(50),ForeignKey('users.username'), primary_key=True)
-    followed_name=Column(String(50),ForeignKey('users.username'), primary_key=True)
-
-
-
-
-class User(Base, UserMixin):
+class User(Base):
     __tablename__ = 'users'
 
     username = Column(String(50), unique=True, primary_key=True)
@@ -34,10 +23,6 @@ class User(Base, UserMixin):
     phone_number = Column(String(15))
     date_created = Column(DateTime, default=datetime.utcnow)
     is_authenticated = Column(Boolean(), default=False)
-    followed=relationship('Follow', foreign_keys=[Follow.follower_name], backref=backref('follower',lazy='joined'),
-                        lazy='dynamic', cascade='all, delete-orphan')
-    followers=relationship('Follow', foreign_keys=[Follow.followed_name], backref=backref('followed',lazy='joined'),
-                        lazy='dynamic', cascade='all, delete-orphan')
 
     def __init__(self, username=None, email=None, password=None,
                  authy_id=None, phone_number=None, is_authenticated=False):
@@ -69,28 +54,6 @@ class User(Base, UserMixin):
     @classmethod
     def load_user(cls, user_id):
         return cls.query.get(user_id)
-
-
-    def follow(self, user):
-        if not self.is_following(user):
-            f = Follow(follower=self, followed=user)
-            db_session.add(f)
-
-    def unfollow(self, user):
-        f = self.followed.filter_by(followed_name=user.username).first()
-        if f:
-            db_session.delete(f)
-
-    def is_following(self, user):
-        if user.username is None:
-            return False
-        return self.followed.filter_by(followed_name=user.username).first() is not None
-
-    def is_followed_by(self, user):
-        if user.username is None:
-            return False
-        return self.followers.filter_by(follower_name=user.username).first() is not None
-
 
 
 class Post(Base, UserMixin):

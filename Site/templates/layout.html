@@ -46,13 +46,13 @@
 		  <div id="navbar" class="navbar-collapse collapse">
       {%if current_user.is_authenticated%}
       <ul class="nav navbar-nav">
-        <li><a href="{{url_for('logout')}}">Logout</a></li>
-        <li><a href="{{url_for('account')}}">Profile</a></li>
+        <li><a href="logout">Logout</a></li>
+        <li><a href="myaccount">Profile</a></li>
       </ul>
       {%else%}
 			<ul class="nav navbar-nav">
-                <li><a href="{{url_for('login')}}">Login</a></li>
-                <li><a href="{{url_for('register')}}">Sign Up</a></li>
+                <li><a href="login">Login</a></li>
+                <li><a href="register">Sign Up</a></li>
 			</ul>
       {%endif%}
 		  </div><!--/.nav-collapse -->
