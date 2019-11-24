@@ -32,6 +32,8 @@ class RegForm(FlaskForm):
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
+        if '.' not in email.data:
+            raise ValidationError('Invalid Email')
         if user:
             raise ValidationError('An account with that email already exists')
 
