@@ -27,7 +27,6 @@ def home():
     return render_template('app_home.html')
 
 
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -136,7 +135,7 @@ def updateaccount():
     return render_template('update.html', title='Update Profile', profile_pic=profile_pic, form=form)
 
 
-@app.route('/posts/create', methods=['GET','POST'])
+@app.route('/posts/create', methods=['GET', 'POST'])
 def newpost():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
@@ -150,11 +149,13 @@ def newpost():
     app.logger.debug(form.errors)
     return render_template('newpost.html', title='New Post', form=form)
 
+
 @app.route('/posts/all')
 def allPosts():
-    posts=Posts.query.all()
+    posts = Posts.query.all()
 
-    return render_template("allposts.html",posts=posts)
+    return render_template("allposts.html", posts=posts)
+
 
 ######################
 # TOKEN VERIFICATION #
@@ -272,7 +273,7 @@ def verified():
 # Live Chat
 @app.route('/chat')
 def sessions():
-    return render_template('chatt.html')
+    return render_template('chat.html', user=current_user)
 
 
 def messageReceived(methods=['GET', 'POST']):
