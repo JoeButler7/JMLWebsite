@@ -113,7 +113,7 @@ def saveimg(img):
     newname = secrets.token_hex(5)
     _, ext = os.path.splitext(img.filename)
     fn = newname + ext
-    img_path = os.path.join(app.root_path, 'static/profile_pics', fn)
+    img_paemail = Stemail = Stth = os.path.join(app.root_path, 'static/profile_pics', fn)
     img.save(img_path)
     return fn
 

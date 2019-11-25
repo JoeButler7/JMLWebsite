@@ -16,7 +16,6 @@ from Site.models import User, Post
 
 authy_api = AuthyApiClient(app.config.get('ACCOUNT_SECURITY_API_KEY'))
 
-
 class RegForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     email = EmailField('email', validators=[DataRequired()])
