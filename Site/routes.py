@@ -123,13 +123,15 @@ def updateaccount():
         if form.picture.data:
             profile_pic = saveimg(form.picture.data)
             current_user.profile_pic = profile_pic
-        current_user.username = form.username.data
-        current_user.email = form.email.data
-        db.session.commit
+        if form.username.data:
+            current_user.username = form.username.data
+        if form.email.data:
+            current_user.email = form.email.data
+        db_session.commit()
         flash('Account successfully updated')
         return redirect(url_for('account'))
     profile_pic = url_for('static', filename='profilepics/' + current_user.profile_pic)
-    return render_template('update.html', title='Update Profile', profile_pic=profile_pic, form=form)
+    return render_template('update.html', title='Update Profile', profile_pic=profile_pic, form=form, user=current_user)
 
 @app.route('/users/<username>')
 def useraccounts(username):

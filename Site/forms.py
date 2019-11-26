@@ -66,8 +66,8 @@ class RegForm(FlaskForm):
 
 
 class UpdateProfileForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[ Length(min=2, max=20)])
+    email = StringField('Email', validators=[ Email()])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpeg', 'png', 'jpg'])])
     submit = SubmitField('Update')
 
