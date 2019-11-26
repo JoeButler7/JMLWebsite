@@ -27,3 +27,15 @@ footer p {
     width: 1170px;
     padding: 0 0 1px 30px;
 }
+.chat-room-input {
+    display: flex;
+    flex-wrap: nowrap;
+}
+ .msg-bottom form .input-group {
+     width: 80%;
+ }
+ .username {
+     border-radius: 20px;
+     box-shadow: none;
+     border-color: white;
+ }

@@ -3,6 +3,7 @@ import secrets
 import datetime
 
 import flask
+from flask_socketio import SocketIO
 from authy.api import AuthyApiClient
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, logout_user, login_required, login_manager
@@ -17,12 +18,13 @@ from .decorators import auth_required
 
 authy_api = AuthyApiClient(app.config.get('ACCOUNT_SECURITY_API_KEY'))
 
+socketio = SocketIO(app)
+
 
 @app.route('/')
 @app.route('/home')
 def home():
     return render_template('app_home.html')
-
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -99,6 +101,7 @@ def logout():
 
 
 @app.route('/myaccount')
+@auth_required
 def account():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
@@ -175,7 +178,7 @@ def unfollow(username):
     return redirect(url_for('useraccounts', username=username))
 
 
-@app.route('/posts/create', methods=['GET','POST'])
+@app.route('/posts/create', methods=['GET', 'POST'])
 def newpost():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
@@ -189,10 +192,12 @@ def newpost():
     app.logger.debug(form.errors)
     return render_template('newpost.html', title='New Post', form=form)
 
+
 @app.route('/posts/all')
 def allPosts():
-    posts=Post.query.all()
-    return render_template("allposts.html",posts=posts)
+    posts = Posts.query.all()
+    return render_template("allposts.html", posts=posts)
+
 
 ######################
 # TOKEN VERIFICATION #
@@ -305,3 +310,23 @@ def verified():
     if not flask.session.get('is_verified'):
         return flask.redirect('/verification')
     return flask.render_template('authenticated_user.html')
+
+
+# Live Chat
+@app.route('/chat')
+def sessions():
+    return render_template('chat.html', user=current_user)
+
+
+def messageReceived(methods=['GET', 'POST']):
+    print('message was received!!!')
+
+
+@socketio.on('my event')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', json, callback=messageReceived)
+
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
