@@ -4,6 +4,7 @@ from flask_dotenv import DotEnv
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from flask_scss import Scss
+from flask_mail import Mail
 
 from .config import Config
 
@@ -11,6 +12,7 @@ app = Flask(__name__)
 Scss(app)
 app.config.from_object(Config)
 env = DotEnv(app)
+mail=Mail(app)
 
 csrf = CSRFProtect(app)
 

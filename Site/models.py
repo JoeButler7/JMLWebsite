@@ -5,6 +5,8 @@ from flask_sqlalchemy import Model
 from passlib.hash import argon2
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship, backref
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from Site import app
 
 from .db import Base, db_session
 
@@ -28,6 +30,7 @@ class User(Base, UserMixin):
 
     username = Column(String(50), unique=True, primary_key=True)
     email = Column(String(100), unique=True, nullable=False)
+    email_verified=Column(Boolean(),default=False)
     profile_pic = Column(String(20), nullable=False, default='default.jpg')
     authy_id = Column(String(12))
     pw_hash = Column(String(200))
@@ -91,7 +94,18 @@ class User(Base, UserMixin):
             return False
         return self.followers.filter_by(follower_name=user.username).first() is not None
 
+    def get_confirm_token(self, expires_sec=1800):
+        s=Serializer(app.config['SECRET_KEY'],expires_sec)
+        return s.dumps({'user_name': self.username})
 
+    @staticmethod
+    def verify_confrim_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_name=s.loads(token)['user_name']
+        except:
+            return None
+        return User.query.get(user_name)
 
 class Post(Base, UserMixin):
     __tablename__ = 'Posts'

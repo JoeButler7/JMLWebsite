@@ -7,12 +7,12 @@ from flask_socketio import SocketIO
 from authy.api import AuthyApiClient
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, logout_user, login_required, login_manager
-
-from Site import app, db
+from passlib.hash import argon2
+from Site import app, db, mail
 from Site.forms import RegForm, LoginForm, UpdateProfileForm, NewPostForm, TokenVerificationForm, PhoneVerificationForm, \
-    TokenPhoneValidationForm
+    TokenPhoneValidationForm, ResetPassFrom, ResetPassRequestForm
 from Site.models import User, Post
-
+from flask_mail import Message
 from .db import db_session
 from .decorators import auth_required
 
@@ -51,6 +51,7 @@ def register():
             db_session.add(user)
             db_session.commit()
             login_user(user, remember=True)
+            send_confirm_email(user)
             return flask.redirect('/auth')
         else:
             form.errors['non_field'] = []
@@ -130,8 +131,12 @@ def updateaccount():
             current_user.username = form.username.data
         if form.email.data:
             current_user.email = form.email.data
+            current_user.email_verified=False
         db_session.commit()
+        if form.email.data:
+            send_confirm_email(current_user)
         flash('Account successfully updated')
+        login_user(current_user, remember=False)
         return redirect(url_for('account'))
     profile_pic = url_for('static', filename='profilepics/' + current_user.profile_pic)
     return render_template('update.html', title='Update Profile', profile_pic=profile_pic, form=form, user=current_user)
@@ -266,6 +271,43 @@ def onetouch_status():
     else:
         return flask.Response(approval_status.errros(), status=503)
 
+####################
+#Email Confirmation#
+####################
+def send_confirm_email(user):
+    token=user.get_confirm_token()
+    msg=Message('Confirm Your Email', sender='noreply@overRated.com',
+                recipients=user.email.split())
+    msg.body=f'''To confirm your password, click the following link
+{url_for('confirm_email',token=token, _external=True)}
+
+If you did not register for an overRated account ignore this email
+'''
+    mail.send(msg)
+
+
+
+@app.route('/confirm_email/<username>', methods=['POST', 'GET'])
+@login_required
+def confirm_request(username):
+    user=User.load_user(username)
+    if user:
+        send_confirm_email(user)
+        flash('A confirmation reset email has been sent')
+    return redirect(url_for('account'))
+
+
+@app.route('/confirm/<token>', methods=['POST', 'GET'])
+def confirm_email(token):
+    user=User.verify_confrim_token(token)
+    if user is None:
+        flash('Invalid or expired token', 'warning')
+        return redirect(url_for('account'))
+    user.email_verified = True
+    db_session.commit()
+    return render_template('confirmed.html')
+
+
 
 ######################
 # Phone Verification #
@@ -312,7 +354,9 @@ def verified():
     return flask.render_template('authenticated_user.html')
 
 
-# Live Chat
+#############
+# Live Chat #
+#############
 @app.route('/chat')
 @login_required
 def sessions():
@@ -328,6 +372,46 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     socketio.emit('my response', json, callback=messageReceived)
 
+
+##################
+# Password Reset #
+##################
+def send_reset_email(user):
+    token=user.get_confirm_token()
+    msg=Message('Password Reset', sender='noreply@overRated.com',
+                recipients=user.email.split())
+    msg.body=f'''To reset your password, click the following link
+{url_for('reset_password',token=token, _external=True)}
+
+If you did not request a password reset ignore this email
+'''
+    mail.send(msg)
+
+
+@app.route('/resetrequest', methods=['POST', 'GET'])
+def resetrequest():
+    form=ResetPassRequestForm()
+    if form.validate_on_submit():
+        user=User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash('A Password reset email has been sent')
+        return redirect(url_for('login'))
+    return render_template('Reset_request.html', title='Reset Password', form=form)
+
+@app.route('/reset_password/<token>', methods=['POST', 'GET'])
+def reset_password(token):
+    user=User.verify_confrim_token(token)
+    if user is None:
+        flash('Invalid or expired token', 'warning')
+        return redirect(url_for('resetrequest'))
+    form=ResetPassFrom()
+    if form.validate_on_submit():
+        print('Valid')
+        user.pw_hash = argon2.hash(form.password.data)
+        db_session.commit()
+        flash('Password updated')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', title='Reset Password', form=form)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

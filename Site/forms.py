@@ -128,6 +128,24 @@ class TokenVerificationForm(FlaskForm):
             return False
         return True
 
+class ResetPassRequestForm(FlaskForm):
+    email=StringField('Email', validators=[DataRequired(), Email()])
+    submit=SubmitField('Request Password Reset')
+
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('There is no account with that email')
+        if user.email_verified==False:
+            raise ValidationError('That email has not yet been confrimed')
+
+class ResetPassFrom(FlaskForm):
+    password = PasswordField('password', validators=[DataRequired()])
+    confirm_password = PasswordField('confirm_password',
+                                     validators=[DataRequired()])
+    submit=SubmitField('Request Password')
+
 
 ######################
 # Phone Verification #
