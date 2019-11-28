@@ -12,15 +12,11 @@ from datetime import datetime
 from flask_login import UserMixin
 
 
-
-
 class Follow(Base):
-    __tablename__='Follows'
+    __tablename__ = 'Follows'
 
-    follower_name=Column(String(50),ForeignKey('users.username'), primary_key=True)
-    followed_name=Column(String(50),ForeignKey('users.username'), primary_key=True)
-
-
+    follower_name = Column(String(50), ForeignKey('users.username'), primary_key=True)
+    followed_name = Column(String(50), ForeignKey('users.username'), primary_key=True)
 
 
 class User(Base, UserMixin):
@@ -34,10 +30,10 @@ class User(Base, UserMixin):
     phone_number = Column(String(15))
     date_created = Column(DateTime, default=datetime.utcnow)
     is_authenticated = Column(Boolean(), default=False)
-    followed=relationship('Follow', foreign_keys=[Follow.follower_name], backref=backref('follower',lazy='joined'),
-                        lazy='dynamic', cascade='all, delete-orphan')
-    followers=relationship('Follow', foreign_keys=[Follow.followed_name], backref=backref('followed',lazy='joined'),
-                        lazy='dynamic', cascade='all, delete-orphan')
+    followed = relationship('Follow', foreign_keys=[Follow.follower_name], backref=backref('follower', lazy='joined'),
+                            lazy='dynamic', cascade='all, delete-orphan')
+    followers = relationship('Follow', foreign_keys=[Follow.followed_name], backref=backref('followed', lazy='joined'),
+                             lazy='dynamic', cascade='all, delete-orphan')
 
     def __init__(self, username=None, email=None, password=None,
                  authy_id=None, phone_number=None, is_authenticated=False):
@@ -70,7 +66,6 @@ class User(Base, UserMixin):
     def load_user(cls, user_id):
         return cls.query.get(user_id)
 
-
     def follow(self, user):
         if not self.is_following(user):
             f = Follow(follower=self, followed=user)
@@ -92,16 +87,29 @@ class User(Base, UserMixin):
         return self.followers.filter_by(follower_name=user.username).first() is not None
 
 
-
 class Post(Base, UserMixin):
     __tablename__ = 'Posts'
 
-    id = Column(Integer, primary_key=True,autoincrement=True)
-    Title = Column(String(50), nullable=False )
-    Category = Column(String(15))
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    Title = Column(String(50), nullable=False)
+    Category = Column(String(2))
     date_posted = Column(DateTime, index=True, default=datetime.utcnow)
     content = Column(Text)
 
+    def __init__(self, id=None, Title=None, Catgeory=None,
+                 date_posted=None, content=None):
+        self.id = id
+        self.Title = Title
+        self.Category = Catgeory
+        self.date_posted = date_posted
+        self.content = content
+
+    def __repr__(self):
+        return f"User('{self.id}', '{self.Title}','{self.Category}')"
+
+    def get_id(self):
+        return self.id
+
     @classmethod
-    def load_post(cls, post_id):
-        return cls.query.get(post_id)
+    def load_post(cls, id):
+        return cls.query.get(id)

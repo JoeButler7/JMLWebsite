@@ -9,6 +9,7 @@ from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, TextAreaField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms_sqlalchemy.fields import QuerySelectField
 from phonenumbers.phonenumberutil import NumberParseException
 
 from . import app
@@ -66,8 +67,8 @@ class RegForm(FlaskForm):
 
 
 class UpdateProfileForm(FlaskForm):
-    username = StringField('Username', validators=[ Length(min=2, max=20)])
-    email = StringField('Email', validators=[ Email()])
+    username = StringField('Username', validators=[Length(min=2, max=20)])
+    email = StringField('Email', validators=[Email()])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpeg', 'png', 'jpg'])])
     submit = SubmitField('Update')
 
@@ -100,10 +101,13 @@ class LoginForm(FlaskForm):
 
 
 class NewPostForm(FlaskForm):
-    categories = ['Study Spot', 'Professor', 'Class', 'Bar/Club']
+    categories = [('Study Spot', 'Study Spot'), ('Professor', 'Professor'), ('Class', 'Class'),
+                  ('Bar/Club', 'Bar/Club')]
     title = StringField('Title', validators=[DataRequired(), Length(min=2, max=50)])
     content = TextAreaField('content', validators=[DataRequired()])
+    #type = SelectField('Category', choices=categories)
     type = SelectField('Category', choices=categories)
+
     submit = SubmitField('Post Review')
 
 

@@ -15,12 +15,9 @@
                     {{ form.content(class="form-control form-control-lg") }}
             </div>
 
-            <select name="activity">
-    {% for Category in form.categories %}
-        <option value="{{ Category }}">{{ Category }}</option>
-    {% endfor %}
-  </select>
+
         </fieldset>
+        {{ form.type }}
         <div class="form-group">
             {{ form.submit(class="btn btn-outline-info") }}
         </div>
