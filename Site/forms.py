@@ -8,8 +8,12 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, TextAreaField
 from wtforms.fields.html5 import EmailField
+
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from wtforms_sqlalchemy.fields import QuerySelectField
+
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
+
 from phonenumbers.phonenumberutil import NumberParseException
 
 from . import app
@@ -67,9 +71,10 @@ class RegForm(FlaskForm):
 
 
 class UpdateProfileForm(FlaskForm):
-    username = StringField('Username', validators=[Length(min=2, max=20)])
-    email = StringField('Email', validators=[Email()])
-    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpeg', 'png', 'jpg'])])
+    username = StringField('Username', validators=[Length(min=2, max=20), Optional()])
+    email = StringField('Email', validators=[Email(), Optional()])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpeg', 'png', 'jpg']), Optional()])
+
     submit = SubmitField('Update')
 
     def validate_username(self, username):
@@ -105,7 +110,9 @@ class NewPostForm(FlaskForm):
                   ('Bar/Club', 'Bar/Club')]
     title = StringField('Title', validators=[DataRequired(), Length(min=2, max=50)])
     content = TextAreaField('content', validators=[DataRequired()])
-    #type = SelectField('Category', choices=categories)
+    rating = StringField('rating', validators=[DataRequired()])
+    # type = SelectField('Category', choices=categories)
+    name = StringField('name', validators=[DataRequired()])
     type = SelectField('Category', choices=categories)
 
     submit = SubmitField('Post Review')
@@ -131,6 +138,25 @@ class TokenVerificationForm(FlaskForm):
             self.token.errors.append(str(e))
             return False
         return True
+
+
+class ResetPassRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('There is no account with that email')
+        if user.email_verified == False:
+            raise ValidationError('That email has not yet been confrimed')
+
+
+class ResetPassFrom(FlaskForm):
+    password = PasswordField('password', validators=[DataRequired()])
+    confirm_password = PasswordField('confirm_password',
+                                     validators=[DataRequired()])
+    submit = SubmitField('Request Password')
 
 
 ######################

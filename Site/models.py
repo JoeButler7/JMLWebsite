@@ -5,6 +5,8 @@ from flask_sqlalchemy import Model
 from passlib.hash import argon2
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship, backref
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from Site import app
 
 from .db import Base, db_session
 
@@ -24,6 +26,7 @@ class User(Base, UserMixin):
 
     username = Column(String(50), unique=True, primary_key=True)
     email = Column(String(100), unique=True, nullable=False)
+    email_verified = Column(Boolean(), default=False)
     profile_pic = Column(String(20), nullable=False, default='default.jpg')
     authy_id = Column(String(12))
     pw_hash = Column(String(200))
@@ -86,29 +89,27 @@ class User(Base, UserMixin):
             return False
         return self.followers.filter_by(follower_name=user.username).first() is not None
 
+    @staticmethod
+    def verify_confrim_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_name = s.loads(token)['user_name']
+        except:
+            return None
+        return User.query.get(user_name)
+
 
 class Post(Base, UserMixin):
     __tablename__ = 'Posts'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     Title = Column(String(50), nullable=False)
+    rating = Column(String(2))
     Category = Column(String(2))
     date_posted = Column(DateTime, index=True, default=datetime.utcnow)
     content = Column(Text)
+    name = Column(String(2))
 
-    def __init__(self, id=None, Title=None, Catgeory=None,
-                 date_posted=None, content=None):
-        self.id = id
-        self.Title = Title
-        self.Category = Catgeory
-        self.date_posted = date_posted
-        self.content = content
-
-    def __repr__(self):
-        return f"User('{self.id}', '{self.Title}','{self.Category}')"
-
-    def get_id(self):
-        return self.id
 
     @classmethod
     def load_post(cls, id):

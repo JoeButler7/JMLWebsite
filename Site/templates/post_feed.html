@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1 class="jumbotron posthead"> Reviews <span class="text-muted"> - by your peers, for you. </span></h1>
+
+  <!-- Page Content -->
+  <div class="container">
+        <div class="row">
+
+
+              {% for post in posts  %}
+  <div class="col-lg-8 col-md-8">
+                <div class="card">
+                        <div>
+                          <h2 class="jumbotronpost">LOCATIONNAME</h2>
+                            <p>{{ post.Title }}</p>
+                          <div class="cardcontent">
+                             <p class="cardtext b"> RATING: {{ post.rating }} </p>
+                          <p class="cardtext ">{{ post.content }}</p>
+                          <a href="#" class="btn btn-primary cardbutton">View &rarr;</a>
+
+                        <div class="card-footer text-muted cardtext">
+                          Posted on DATEPOSTED by {{post.date_posted.strftime('%Y-%m-%d')}}
+                          <a href="#"> USERPOSTED {{ post.name }} </a>
+                        </div>
+                    </div>
+                    </div>
+                      </div>
+</div>
+              {% endfor %}
+
+
+
+          <div class="col-lg-3 col-md-3 jumbotron sidebarr">
+            <div>
+              <h5>Find a review:</h5>
+              <div>
+                <div class="input-group col-lg-12  col-md-12 col-sm-12 search">
+                  <input type="text" class="form-control" placeholder="Search">
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary searchbar" type="button">Go!</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="linklist">
+              <h5 >Local Spots</h5>
+              <div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <ul class="list-unstyled">
+                      <li>
+                        <a href="#">Bars</a>
+                      </li>
+                      <li>
+                        <a href="#">Restaurants</a>
+                      </li>
+                      <li>
+                        <a href="#">Entertainment</a>
+                      </li>
+                      <li>
+                        <a href="#">Services</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="linklist">
+                    <h5 >Campus Spots</h5>
+                    <div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <ul class="list-unstyled">
+                            <li>
+                              <a href="#">Libraries</a>
+                            </li>
+                            <li>
+                              <a href="#">Dining</a>
+                            </li>
+                            <li>
+                              <a href="#">Bathrooms</a>
+                            </li>
+                            <li>
+                              <a href="#">Programs</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+              </div>
+            </div>
+
+
+          </div>
+
+{% endblock content %}
