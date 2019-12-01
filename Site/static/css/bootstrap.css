@@ -1,3 +1,89 @@
+.b{
+  font-weight: bold;
+  font-size: larger;
+}
+.linklist{
+  float: left !important;
+}
+
+.searchbar{
+  border-radius: 20px !important;
+  margin-left: 5px !important;
+}
+
+.cardcontent{
+  padding: 30px;
+  padding-bottom: 5px !important;
+}
+
+.cardbutton{
+  float: right;
+}
+
+.cardtext{
+  margin-bottom: 30px;
+
+}
+
+.search{
+  margin-bottom:20px;
+}
+
+.posthead{
+  margin-left: 30px;
+  margin-right: 30px;
+  padding-left: 30px;
+}
+
+.card{
+  background-color: whitesmoke;
+  border-radius: 10px;
+}
+
+.jumbotronpost {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(216, 215, 215);
+  padding-left: 30px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.sidebarr{
+  background-color: rgb(216, 215, 215) !important;
+  margin-top: 20px;
+  float: right !important;
+}
+
+.panellist{
+  font-size: 18px;
+}
+
+.carousel {
+  height: 500px;
+  margin-bottom: 30px;
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel .item {
+  height: 500px;
+  background-color: #777;
+}
+.carousel-inner > .item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 500px;
+}
+
+
+
 .names{
   padding-top: 20px !important;
 }
