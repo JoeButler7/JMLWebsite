@@ -89,6 +89,10 @@ class User(Base, UserMixin):
             return False
         return self.followers.filter_by(follower_name=user.username).first() is not None
 
+    def get_confirm_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'user_name': self.username})
+
     @staticmethod
     def verify_confrim_token(token):
         s = Serializer(app.config['SECRET_KEY'])
@@ -105,7 +109,7 @@ class Post(Base, UserMixin):
     id = Column(Integer, primary_key=True, autoincrement=True)
     Title = Column(String(50), nullable=False)
     rating = Column(String(2))
-    Category = Column(String(2))
+    Category = Column(String(10))
     date_posted = Column(DateTime, index=True, default=datetime.utcnow)
     content = Column(Text)
     name = Column(String(2))

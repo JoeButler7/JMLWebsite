@@ -186,6 +186,10 @@ def unfollow(username):
     return redirect(url_for('useraccounts', username=username))
 
 
+######################
+# Posts #
+######################
+
 @app.route('/posts/create', methods=['GET', 'POST'])
 def newpost():
     if not current_user.is_authenticated:
@@ -193,7 +197,8 @@ def newpost():
     form = NewPostForm()
 
     if form.validate_on_submit():
-        post = Post(Title=form.title.data, content=form.content.data, Category=form.type.data, name=form.name.data, rating=form.rating.data)
+        post = Post(Title=form.title.data, content=form.content.data, Category=form.type.data, name=form.name.data,
+                    rating=form.rating.data)
         db_session.add(post)
         db_session.commit()
         flash("Successfully Posted")
@@ -206,6 +211,72 @@ def newpost():
 def allPosts():
     posts = Post.query.all()
     return render_template("post_feed.html", posts=posts)
+
+
+@app.route('/posts/bars')
+def barPosts():
+    posts = Post.query.all()
+    return render_template("post_bars_feed.html", posts=posts)
+
+
+@app.route('/posts/restaurants')
+def restaurantsPosts():
+    posts = Post.query.all()
+    return render_template("post_restaurants_feed.html", posts=posts)
+
+
+@app.route('/posts/entertainment')
+def entertainmentPosts():
+    posts = Post.query.all()
+    return render_template("post_entertainment_feed.html", posts=posts)
+
+
+@app.route('/posts/services')
+def servicesPosts():
+    posts = Post.query.all()
+    return render_template("post_entertainment_feed.html", posts=posts)
+
+
+@app.route('/posts/libraries')
+def librariesPosts():
+    posts = Post.query.all()
+    return render_template("post_libraries_feed.html", posts=posts)
+
+
+@app.route('/posts/dining')
+def dinigPosts():
+    posts = Post.query.all()
+    return render_template("post_dining_feed.html", posts=posts)
+
+
+@app.route('/posts/bathrooms')
+def bathroomPosts():
+    posts = Post.query.all()
+    return render_template("post_bathrooms_feed.html", posts=posts)
+
+
+@app.route('/posts/programs')
+def programsPosts():
+    posts = Post.query.all()
+    return render_template("post_program_feed.html", posts=posts)
+
+
+@app.route('/posts/professors')
+def professorsPosts():
+    posts = Post.query.all()
+    return render_template("post_professor_feed.html", posts=posts)
+
+
+@app.route('/posts/studyspot')
+def studyspotPosts():
+    posts = Post.query.all()
+    return render_template("post_studyspot_feed.html", posts=posts)
+
+@app.route('/posts/class')
+def classPosts():
+    posts = Post.query.all()
+    return render_template("post_class_feed.html", posts=posts)
+
 
 
 ######################
