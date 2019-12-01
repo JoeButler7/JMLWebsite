@@ -234,7 +234,7 @@ def entertainmentPosts():
 @app.route('/posts/services')
 def servicesPosts():
     posts = Post.query.all()
-    return render_template("post_entertainment_feed.html", posts=posts)
+    return render_template("post_services_feed.html", posts=posts)
 
 
 @app.route('/posts/libraries')
@@ -244,7 +244,7 @@ def librariesPosts():
 
 
 @app.route('/posts/dining')
-def dinigPosts():
+def diningPosts():
     posts = Post.query.all()
     return render_template("post_dining_feed.html", posts=posts)
 

@@ -111,10 +111,10 @@ class NewPostForm(FlaskForm):
                   ('Services', 'Services'), ('Libraries', 'Libraries'), ('Dining', 'Dining'), ('Bathrooms', 'Bathrooms'),
                   ( 'Programs', 'Programs')]
     title = StringField('Title', validators=[DataRequired(), Length(min=2, max=50)])
-    content = TextAreaField('content', validators=[DataRequired()])
-    rating = StringField('rating', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    rating = StringField('Rating', validators=[DataRequired()])
     # type = SelectField('Category', choices=categories)
-    name = StringField('name', validators=[DataRequired()])
+    name = StringField('Anonymous Name', validators=[DataRequired()])
     type = SelectField('Category', choices=categories)
 
     submit = SubmitField('Post Review')
