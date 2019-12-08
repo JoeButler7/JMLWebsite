@@ -11,7 +11,7 @@ from passlib.hash import argon2
 from Site import app, db, mail
 from Site.forms import RegForm, LoginForm, UpdateProfileForm, NewPostForm, TokenVerificationForm, PhoneVerificationForm, \
     TokenPhoneValidationForm, ResetPassFrom, ResetPassRequestForm
-from Site.models import User, Post
+from Site.models import User, Post, PostLike
 from flask_mail import Message
 from .db import db_session
 from .decorators import auth_required
@@ -286,12 +286,19 @@ def classPosts():
     return render_template("post_class_feed.html", posts=posts)
 
 
+@app.route('/posts/liked')
+def likedPosts():
+    posts = Post.query.all()
+    likedPosts = PostLike.query.all()
+    return render_template("liked_post_feed.html", posts=posts, likedPosts=likedPosts)
+
+
 @app.route('/like/<int:post_id>/<action>')
 @login_required
 def like_action(post_id, action):
     post = Post.query.filter_by(id=post_id).first()
-    #print(post_id)
-   # print(post)
+    # print(post_id)
+    # print(post)
     if action == 'like':
         current_user.like_post(post)
         db_session.commit()

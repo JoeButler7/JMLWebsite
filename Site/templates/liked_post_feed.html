@@ -1,6 +1,11 @@
 {% extends "posts_layout.html" %}
 {% block info %}
+    {%  for like in likedPosts %}
+    {%  set likedpost = like.post_id %}
+    {% endfor %}
+
     {% for post in posts  %}
+{%  if likedpost in post.id %}
 
         <div class="card">
                         <div>
@@ -36,7 +41,7 @@
                     </div>
                     </div>
                       </div>
-
+ {% endif %}
     {% endfor %}
 
 

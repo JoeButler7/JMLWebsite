@@ -66,3 +66,42 @@ footer p {
  .btn {
 
  }
+ .top-align-post {
+     background: black;
+    position: relative;
+    top: -8px;
+    min-height: 56px;
+    width: 20%;
+    display: flex;
+    right: -14px;
+    flex-direction: row;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16pt;
+ }
+ .top-align-post:hover {
+     background: black;
+ }
+
+
+ .align {
+         display: flex;
+    justify-content: flex-end;
+ }
+
+ .heart {
+  fill: red;
+  position: relative;
+  top: 5px;
+  width: 40px;
+
+}
+ .heart:hover{
+     animation: pulse 1s ease infinite;
+ }
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
