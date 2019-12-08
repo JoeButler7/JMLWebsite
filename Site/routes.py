@@ -289,7 +289,7 @@ def classPosts():
 @app.route('/like/<int:post_id>/<action>')
 @login_required
 def like_action(post_id, action):
-    post = Post.query.filter_by(id=post_id)
+    post = Post.query.filter_by(id=post_id).first()
     #print(post_id)
    # print(post)
     if action == 'like':

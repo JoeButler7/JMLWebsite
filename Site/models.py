@@ -131,7 +131,6 @@ class User(Base, UserMixin, Model):
                 post_id=post.id).delete()
 
     def has_liked_post(self, post):
-        #print(Post)
         return PostLike.query.filter(
             PostLike.user_id == self.username,
             PostLike.post_id == post.id).count() > 0
