@@ -1,3 +1,4 @@
+itsdangerous
 passlib
 wtforms
 werkzeug

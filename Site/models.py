@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask_login import UserMixin
-from flask_sqlalchemy import Model
+from flask_sqlalchemy import Model, SQLAlchemy
 from passlib.hash import argon2
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship, backref
@@ -12,6 +12,17 @@ from .db import Base, db_session
 
 from datetime import datetime
 from flask_login import UserMixin
+from pprint import pprint
+
+
+db = SQLAlchemy(app)
+
+
+class Likers(Base):
+    __tablename__ = 'likers'
+
+    liker = Column('liker_id', String(50), ForeignKey('users.username'), primary_key=True)
+    liked = Column('liked_id', Integer, ForeignKey('post.id'), primary_key=True)
 
 
 class Follow(Base):
@@ -21,9 +32,17 @@ class Follow(Base):
     followed_name = Column(String(50), ForeignKey('users.username'), primary_key=True)
 
 
-class User(Base, UserMixin):
+class PostLike(Base,  Model):
+    __tablename__ = 'post_like'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(String, ForeignKey('users.username'))
+    post_id = Column(Integer, ForeignKey('post.id'))
+
+
+class User(Base, UserMixin, Model):
     __tablename__ = 'users'
 
+    # id = Column(Integer, autoincrement=True, unique=True)
     username = Column(String(50), unique=True, primary_key=True)
     email = Column(String(100), unique=True, nullable=False)
     email_verified = Column(Boolean(), default=False)
@@ -33,10 +52,15 @@ class User(Base, UserMixin):
     phone_number = Column(String(15))
     date_created = Column(DateTime, default=datetime.utcnow)
     is_authenticated = Column(Boolean(), default=False)
-    followed = relationship('Follow', foreign_keys=[Follow.follower_name], backref=backref('follower', lazy='joined'),
-                            lazy='dynamic', cascade='all, delete-orphan')
-    followers = relationship('Follow', foreign_keys=[Follow.followed_name], backref=backref('followed', lazy='joined'),
-                             lazy='dynamic', cascade='all, delete-orphan')
+    posts = relationship('Post', backref='users', lazy='joined')
+    # !posts = relationship(
+    # !  'Post',
+    # !   foreign_keys='Post.author_id',
+    # !  backref='posts', lazy='dynamic')
+    liked = relationship(
+        'PostLike',
+        foreign_keys='PostLike.user_id',
+        backref='users', lazy='dynamic')
 
     def __init__(self, username=None, email=None, password=None,
                  authy_id=None, phone_number=None, is_authenticated=False):
@@ -46,6 +70,8 @@ class User(Base, UserMixin):
         self.phone_number = phone_number
         self.is_authenticated = is_authenticated
         self.set_password(password)
+        #self.posts = posts
+       # self.liked = liked
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}','{self.profile_pic}')"
@@ -93,6 +119,23 @@ class User(Base, UserMixin):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_name': self.username})
 
+    def like_post(self, post):
+        if not self.has_liked_post(post):
+            like = PostLike(user_id=self.username, post_id=post.id)
+            db_session.add(like)
+
+    def unlike_post(self, post):
+        if self.has_liked_post(post):
+            PostLike.query.filter_by(
+                user_id=self.username,
+                post_id=post.id).delete()
+
+    def has_liked_post(self, post):
+        #print(Post)
+        return PostLike.query.filter(
+            PostLike.user_id == self.username,
+            PostLike.post_id == post.id).count() > 0
+
     @staticmethod
     def verify_confrim_token(token):
         s = Serializer(app.config['SECRET_KEY'])
@@ -103,18 +146,18 @@ class User(Base, UserMixin):
         return User.query.get(user_name)
 
 
-class Post(Base, UserMixin):
-    __tablename__ = 'Posts'
+class Post(Base, UserMixin, Model):
+    __tablename__ = 'post'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
+    author_id = Column(String, ForeignKey('users.username'))
     Title = Column(String(50), nullable=False)
     rating = Column(String(2))
     Category = Column(String(10))
     date_posted = Column(DateTime, index=True, default=datetime.utcnow)
     content = Column(Text)
     name = Column(String(2))
+    likes = relationship('PostLike', backref='post', lazy='dynamic')
 
-
-    @classmethod
-    def load_post(cls, id):
-        return cls.query.get(id)
+    def __repr__(self):
+        return '<Post {}>'.format(self.content)

@@ -12,13 +12,15 @@ app = Flask(__name__)
 Scss(app)
 app.config.from_object(Config)
 env = DotEnv(app)
-mail=Mail(app)
+mail = Mail(app)
 
 csrf = CSRFProtect(app)
 
 from .db import init_db  # noqa: F401, E402
-from .models import Post  # noqa: E402
 from .models import User  # noqa: E402
+from .models import Post  # noqa: E402
+from .models import PostLike  # noqa: E402
+from .models import Likers  # noqa: E402
 
 login_manager = LoginManager()
 login_manager.user_loader(User.load_user)

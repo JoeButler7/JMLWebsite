@@ -108,8 +108,9 @@ class LoginForm(FlaskForm):
 class NewPostForm(FlaskForm):
     categories = [('Study Spot', 'Study Spot'), ('Professor', 'Professor'), ('Class', 'Class'),
                   ('Bar/Club', 'Bar/Club'), ('Restaurants', 'Restaurants'), ('Entertainment', 'Entertainment'),
-                  ('Services', 'Services'), ('Libraries', 'Libraries'), ('Dining', 'Dining'), ('Bathrooms', 'Bathrooms'),
-                  ( 'Programs', 'Programs')]
+                  ('Services', 'Services'), ('Libraries', 'Libraries'), ('Dining', 'Dining'),
+                  ('Bathrooms', 'Bathrooms'),
+                  ('Programs', 'Programs')]
     title = StringField('Title', validators=[DataRequired(), Length(min=2, max=50)])
     content = TextAreaField('Content', validators=[DataRequired()])
     rating = StringField('Rating', validators=[DataRequired()])

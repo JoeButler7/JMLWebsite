@@ -15,6 +15,7 @@ from Site.models import User, Post
 from flask_mail import Message
 from .db import db_session
 from .decorators import auth_required
+from pprint import pprint
 
 authy_api = AuthyApiClient(app.config.get('ACCOUNT_SECURITY_API_KEY'))
 
@@ -213,6 +214,12 @@ def allPosts():
     return render_template("post_feed.html", posts=posts)
 
 
+@app.route('/posts/myposts')
+def myPosts():
+    users = User.query.all()
+    return render_template("mypost_feed.html", users=users)
+
+
 @app.route('/posts/bars')
 def barPosts():
     posts = Post.query.all()
@@ -272,11 +279,26 @@ def studyspotPosts():
     posts = Post.query.all()
     return render_template("post_studyspot_feed.html", posts=posts)
 
+
 @app.route('/posts/class')
 def classPosts():
     posts = Post.query.all()
     return render_template("post_class_feed.html", posts=posts)
 
+
+@app.route('/like/<int:post_id>/<action>')
+@login_required
+def like_action(post_id, action):
+    post = Post.query.filter_by(id=post_id)
+    #print(post_id)
+   # print(post)
+    if action == 'like':
+        current_user.like_post(post)
+        db_session.commit()
+    if action == 'unlike':
+        current_user.unlike_post(post)
+        db_session.commit()
+    return redirect(request.referrer)
 
 
 ######################

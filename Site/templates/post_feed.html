@@ -15,11 +15,21 @@
 
                         <div class="card-footer text-muted cardtext">
                           Posted on {{post.date_posted.strftime('%Y-%m-%d')}} by  <a href="#"> {{ post.name }} </a>
-
+                            {% if current_user.is_authenticated %}
+        {% if current_user.has_liked_post(post) %}
+                            <a href="{{ url_for('like_action', post_id=post.id, action='unlike') }}">Unlike</a>
+        {% else %}
+<a href="{{ url_for('like_action', post_id=post.id, action='like') }}">Like</a>
+        {% endif %}
+        {{ post.likes.count() }} likes
+    {% else %}
+        {{ post.likes.count() }} likes
+    {% endif %}
                         </div>
                     </div>
                     </div>
                       </div>
+
     {% endfor %}
 
 

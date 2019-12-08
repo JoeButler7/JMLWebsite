@@ -1,0 +1,26 @@
+{% extends "posts_layout.html" %}
+{% block info %}
+    {% for user in users  %}
+
+        <div class="card">
+                        <div>
+                          <h2 class="jumbotronpost">{{ user.username }}</h2>
+
+                          <div class="cardcontent">
+
+                             <p class="cardtext b"> RATING:  </p>
+                          <p class="cardtext "></p>
+                              <p class="cardtext "></p>
+                          <a href="#" class="btn btn-primary cardbutton">View &rarr;</a>
+
+                        <div class="card-footer text-muted cardtext">
+                          Posted by  <a href="#"> {{ user.posts.author }} </a>
+
+                        </div>
+                    </div>
+                    </div>
+                      </div>
+    {% endfor %}
+
+
+{% endblock info %}
