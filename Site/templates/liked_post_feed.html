@@ -4,7 +4,7 @@
 {% for likes in user.liked %}
 
              {% for post in posts  %}
-                 {% if likes.user_id in user.username %}
+                 {% if likes.user_id in user.username and likes.post_id|string in post.id|string %}
             <div class="card">
                         <div>
                           <h2 class="jumbotronpost">{{ post.Title }}</h2>
