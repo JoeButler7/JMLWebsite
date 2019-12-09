@@ -1,25 +1,43 @@
 {% extends "posts_layout.html" %}
 {% block info %}
-    {% for user in users  %}
+    {% for post in posts  %}
+        {% if user.username in post.author_id %}
 
-        <div class="card">
+       <div class="card">
                         <div>
-                          <h2 class="jumbotronpost">{{ user.username }}</h2>
+                          <h2 class="jumbotronpost">{{ post.Title }}</h2>
 
                           <div class="cardcontent">
 
-                             <p class="cardtext b"> RATING:  </p>
-                          <p class="cardtext "></p>
-                              <p class="cardtext "></p>
-                          <a href="#" class="btn btn-primary cardbutton">View &rarr;</a>
+                             <p class="cardtext b"> RATING: {{ post.rating }} </p>
+                          <p class="cardtext ">{{ post.content }}</p>
+                              <p class="cardtext ">{{ post.Category }}</p>
+
 
                         <div class="card-footer text-muted cardtext">
-                          Posted by  <a href="#"> {{ user.posts.author }} </a>
+                          Posted on {{post.date_posted.strftime('%Y-%m-%d')}} by  <a href="#"> {{ post.name }} </a>
+                            {% if current_user.is_authenticated %}
+        {% if current_user.has_liked_post(post) %}
 
+                            <a href="{{ url_for('like_action', post_id=post.id, action='unlike') }}" class="btn btn-primary cardbutton top-align-post"><svg class="heart" viewBox="0 0 32 29.6">
+  <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+    c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"></path>
+</svg> </a>
+        {% else %}
+<a href="{{ url_for('like_action', post_id=post.id, action='like') }}" class="btn btn-primary cardbutton top-align-post"><svg class="heart" viewBox="0 0 32 29.6">
+  <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+    c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"></path>
+</svg> </a>
+        {% endif %}
+       <span class="align">{{ post.likes.count() }} likes</span>
+    {% else %}
+        <span class="align">{{ post.likes.count() }} likes</span>
+    {% endif %}
                         </div>
                     </div>
                     </div>
                       </div>
+        {% endif %}
     {% endfor %}
 
 

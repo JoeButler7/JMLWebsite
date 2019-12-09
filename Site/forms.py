@@ -1,4 +1,5 @@
 import phonenumbers
+import post as post
 
 from authy import AuthyFormatException
 from authy.api import AuthyApiClient
@@ -6,6 +7,7 @@ from authy.api import AuthyApiClient
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
+from sqlalchemy.sql.functions import user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, TextAreaField
 from wtforms.fields.html5 import EmailField
 
@@ -119,6 +121,8 @@ class NewPostForm(FlaskForm):
     type = SelectField('Category', choices=categories)
 
     submit = SubmitField('Post Review')
+
+    author_id = User.username
 
 
 class TokenVerificationForm(FlaskForm):

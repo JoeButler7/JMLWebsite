@@ -149,7 +149,7 @@ class Post(Base, UserMixin, Model):
     __tablename__ = 'post'
 
     id = Column(Integer, primary_key=True)
-    author_id = Column(String, ForeignKey('users.username'))
+    author_id = Column(String, ForeignKey('users.username'), nullable=False)
     Title = Column(String(50), nullable=False)
     rating = Column(String(2))
     Category = Column(String(10))

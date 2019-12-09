@@ -199,7 +199,7 @@ def newpost():
 
     if form.validate_on_submit():
         post = Post(Title=form.title.data, content=form.content.data, Category=form.type.data, name=form.name.data,
-                    rating=form.rating.data)
+                    rating=form.rating.data, author_id=current_user.username)
         db_session.add(post)
         db_session.commit()
         flash("Successfully Posted")
@@ -216,8 +216,8 @@ def allPosts():
 
 @app.route('/posts/myposts')
 def myPosts():
-    users = User.query.all()
-    return render_template("mypost_feed.html", users=users)
+    posts = Post.query.all()
+    return render_template("mypost_feed.html", user=current_user, posts=posts)
 
 
 @app.route('/posts/bars')
@@ -290,7 +290,7 @@ def classPosts():
 def likedPosts():
     posts = Post.query.all()
     likedPosts = PostLike.query.all()
-    return render_template("liked_post_feed.html", posts=posts, likedPosts=likedPosts)
+    return render_template("liked_post_feed.html", posts=posts, likedPosts=likedPosts, user=current_user)
 
 
 @app.route('/like/<int:post_id>/<action>')

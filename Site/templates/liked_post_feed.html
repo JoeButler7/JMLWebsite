@@ -1,13 +1,12 @@
 {% extends "posts_layout.html" %}
 {% block info %}
-    {%  for like in likedPosts %}
-    {%  set likedpost = like.post_id %}
-    {% endfor %}
 
-    {% for post in posts  %}
-{%  if likedpost in post.id %}
+{% for post in posts  %}
+    {{ post.likes }}
+        {% if user.username in post.likes %}
 
-        <div class="card">
+
+    <div class="card">
                         <div>
                           <h2 class="jumbotronpost">{{ post.Title }}</h2>
 
@@ -41,8 +40,10 @@
                     </div>
                     </div>
                       </div>
- {% endif %}
-    {% endfor %}
+{% endif %}
+     {% endfor %}
+
+
 
 
 {% endblock info %}
