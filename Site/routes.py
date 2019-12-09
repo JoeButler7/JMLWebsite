@@ -463,7 +463,9 @@ def verified():
 @app.route('/chat')
 @login_required
 def sessions():
-    return render_template('chat.html', user=current_user)
+    user = current_user
+    profile_pic = url_for('static', filename='profilepics/' + user.profile_pic)
+    return render_template('chat.html', user=user, profile_pic=profile_pic)
 
 
 def messageReceived(methods=['GET', 'POST']):
