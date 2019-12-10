@@ -192,6 +192,7 @@ def useraccounts(username):
 ######################
 
 @app.route('/posts/create', methods=['GET', 'POST'])
+@auth_required
 def newpost():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
@@ -209,84 +210,98 @@ def newpost():
 
 
 @app.route('/posts/all')
+@auth_required
 def allPosts():
     posts = Post.query.all()
     return render_template("post_feed.html", posts=posts)
 
 
 @app.route('/posts/myposts')
+@auth_required
 def myPosts():
     posts = Post.query.all()
     return render_template("mypost_feed.html", user=current_user, posts=posts)
 
 
 @app.route('/posts/bars')
+@auth_required
 def barPosts():
     posts = Post.query.all()
     return render_template("post_bars_feed.html", posts=posts)
 
 
 @app.route('/posts/restaurants')
+@auth_required
 def restaurantsPosts():
     posts = Post.query.all()
     return render_template("post_restaurants_feed.html", posts=posts)
 
 
 @app.route('/posts/entertainment')
+@auth_required
 def entertainmentPosts():
     posts = Post.query.all()
     return render_template("post_entertainment_feed.html", posts=posts)
 
 
 @app.route('/posts/services')
+@auth_required
 def servicesPosts():
     posts = Post.query.all()
     return render_template("post_services_feed.html", posts=posts)
 
 
 @app.route('/posts/libraries')
+@auth_required
 def librariesPosts():
     posts = Post.query.all()
     return render_template("post_libraries_feed.html", posts=posts)
 
 
 @app.route('/posts/dining')
+@auth_required
 def diningPosts():
     posts = Post.query.all()
     return render_template("post_dining_feed.html", posts=posts)
 
 
 @app.route('/posts/bathrooms')
+@auth_required
 def bathroomPosts():
     posts = Post.query.all()
     return render_template("post_bathrooms_feed.html", posts=posts)
 
 
 @app.route('/posts/programs')
+@auth_required
 def programsPosts():
     posts = Post.query.all()
     return render_template("post_program_feed.html", posts=posts)
 
 
 @app.route('/posts/professors')
+@auth_required
 def professorsPosts():
     posts = Post.query.all()
     return render_template("post_professor_feed.html", posts=posts)
 
 
 @app.route('/posts/studyspot')
+@auth_required
 def studyspotPosts():
     posts = Post.query.all()
     return render_template("post_studyspot_feed.html", posts=posts)
 
 
 @app.route('/posts/class')
+@auth_required
 def classPosts():
     posts = Post.query.all()
     return render_template("post_class_feed.html", posts=posts)
 
 
 @app.route('/posts/liked')
+@auth_required
 def likedPosts():
     posts = Post.query.all()
     likedPosts = PostLike.query.all()
@@ -295,6 +310,7 @@ def likedPosts():
 
 @app.route('/like/<int:post_id>/<action>')
 @login_required
+@auth_required
 def like_action(post_id, action):
     post = Post.query.filter_by(id=post_id).first()
     # print(post_id)
@@ -462,6 +478,7 @@ def verified():
 #############
 @app.route('/chat')
 @login_required
+@auth_required
 def sessions():
     user = current_user
     profile_pic = url_for('static', filename='profilepics/' + user.profile_pic)
