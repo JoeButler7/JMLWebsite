@@ -1,11 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
-    
+
     <div class="jumbotron">
       <div class="container">
         <h1>Quit being misled.</h1>
         <p>With overRated, have the security in knowing that the reviews you're reading are relevant to you.</p>
+          {%if not current_user.is_authenticated%}
         <p><a class="btn btn-primary btn-lg" href="register" role="button">  Sign up today!   &raquo;</a></p>
+        {%endif%}
       </div>
     </div>
 
@@ -49,4 +51,3 @@
 		<hr class="featurette-divider">
     </div>
 {% endblock content %}
-

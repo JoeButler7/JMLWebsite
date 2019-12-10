@@ -1,5 +1,5 @@
 import phonenumbers
-import post as post
+
 
 from authy import AuthyFormatException
 from authy.api import AuthyApiClient
