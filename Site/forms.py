@@ -45,7 +45,8 @@ class RegForm(FlaskForm):
             raise ValidationError('An account with that email already exists')
 
     def validate_phone_number(self, phone_number):
-        user = User.query.filter_by(phone_number=phone_number.data).first()
+        phonenum=self.country_code.data+phone_number.data
+        user = User.query.filter_by(phone_number=phonenum).first()
         if user:
             raise ValidationError('An account with that phone number already exists')
 
@@ -76,8 +77,10 @@ class UpdateProfileForm(FlaskForm):
     username = StringField('Username', validators=[Length(min=2, max=20), Optional()])
     email = StringField('Email', validators=[Email(), Optional()])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpeg', 'png', 'jpg']), Optional()])
-
     submit = SubmitField('Update')
+    password = PasswordField('Password', validators=[DataRequired()])
+
+
 
     def validate_username(self, username):
         if username.data != current_user.username:
@@ -90,6 +93,11 @@ class UpdateProfileForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('An account with that email already exists')
+
+    def validate_password(self,password):
+        if not current_user.check_password(password.data):
+            raise ValidationError('Wrong Password')
+            return False
 
 
 class LoginForm(FlaskForm):

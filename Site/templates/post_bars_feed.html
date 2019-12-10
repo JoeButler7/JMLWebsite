@@ -1,7 +1,7 @@
 {% extends "posts_layout.html" %}
 {% block info %}
     {% for post in posts  %}
-{%  if 'Bars' in post.Category %}
+{%  if 'Bar/Club' in post.Category %}
         <div class="card">
                         <div>
                           <h2 class="jumbotronpost">{{ post.Title }}</h2>
