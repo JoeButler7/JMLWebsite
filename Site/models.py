@@ -53,10 +53,6 @@ class User(Base, UserMixin, Model):
     date_created = Column(DateTime, default=datetime.utcnow)
     is_authenticated = Column(Boolean(), default=False)
     posts = relationship('Post', backref='users', lazy='joined')
-    # !posts = relationship(
-    # !  'Post',
-    # !   foreign_keys='Post.author_id',
-    # !  backref='posts', lazy='dynamic')
     liked = relationship(
         'PostLike',
         foreign_keys='PostLike.user_id',
