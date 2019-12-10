@@ -76,8 +76,10 @@ class UpdateProfileForm(FlaskForm):
     username = StringField('Username', validators=[Length(min=2, max=20), Optional()])
     email = StringField('Email', validators=[Email(), Optional()])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpeg', 'png', 'jpg']), Optional()])
-
     submit = SubmitField('Update')
+    password = PasswordField('Password', validators=[DataRequired()])
+
+
 
     def validate_username(self, username):
         if username.data != current_user.username:
@@ -90,6 +92,11 @@ class UpdateProfileForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('An account with that email already exists')
+
+    def validate_password(self,password):
+        if not current_user.check_password(password.data):
+            raise ValidationError('Wrong Password')
+            return False
 
 
 class LoginForm(FlaskForm):
